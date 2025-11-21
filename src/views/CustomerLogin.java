@@ -128,6 +128,7 @@ public class CustomerLogin extends javax.swing.JFrame {
         RegisterCustomer registerCustomer = new RegisterCustomer();
         registerCustomer.setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -156,6 +157,7 @@ public class CustomerLogin extends javax.swing.JFrame {
         else
         {
             JOptionPane.showMessageDialog(this,"Login Failed, Please Check your Username and Password.","Login Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Cheers Mate");
         }
         
 
