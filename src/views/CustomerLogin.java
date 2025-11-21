@@ -157,7 +157,7 @@ public class CustomerLogin extends javax.swing.JFrame {
         else
         {
             JOptionPane.showMessageDialog(this,"Login Failed, Please Check your Username and Password.","Login Error", JOptionPane.ERROR_MESSAGE);
-            JOptionPane.showMessageDialog(this,"Cheers Mate");
+            
         }
         
 
