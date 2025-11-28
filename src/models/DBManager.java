@@ -129,23 +129,26 @@ public class DBManager {
     }
     
 
-    public HashMap<Integer, Order> loadOrders() {
+    public HashMap<Integer, Order> loadOrders(String username) {
         HashMap<Integer, Order> orders = new HashMap<>();
-        String sql = "SELECT OrderId, OrderDate, OrderTotal, Status FROM Orders";
+        String sql = "SELECT * FROM Orders WHERE Username = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-
-                int orderId = rs.getInt("OrderId");
-                java.util.Date orderDate = new java.util.Date(rs.getDate("OrderDate").getTime());
-                double orderTotal = rs.getDouble("OrderTotal");
-                String status = rs.getString("Status");
-                Order order = new Order(orderId, orderDate, orderTotal, status);
-                orders.put(orderId, order);
-            }
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+             stmt.setString(1, username);
+             try (ResultSet rs = stmt.executeQuery())
+             {
+                while (rs.next()) 
+                {
+                    int orderId = rs.getInt("OrderId");
+                    java.util.Date orderDate = new java.util.Date(rs.getDate("OrderDate").getTime());
+                    double orderTotal = rs.getDouble("OrderTotal");
+                    String status = rs.getString("Status");
+                    Order order = new Order(orderId, orderDate, orderTotal, status);
+                    orders.put(orderId, order);
+                }
+             }
 
         } catch (SQLException e) {
             System.out.println("Error loading orders: " + e.getMessage());

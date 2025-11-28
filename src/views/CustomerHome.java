@@ -58,6 +58,11 @@ public class CustomerHome extends javax.swing.JFrame {
         });
 
         btnViewOrders.setText("VIEW MY ORDERS");
+        btnViewOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewOrdersActionPerformed(evt);
+            }
+        });
 
         btnEditDetails.setText("EDIT DETAILS");
         btnEditDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +175,14 @@ public class CustomerHome extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_btnEditDetailsActionPerformed
+
+    private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
+        // TODO add your handling code here:
+        CustomerOrders customerOrders = new CustomerOrders(this.loggedInCustomer);
+        customerOrders.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     /**
      * @param args the command line arguments
