@@ -18,9 +18,9 @@ import javax.swing.Timer;
  *
  * @author 30512007
  */
-public class BrowseProducts extends javax.swing.JFrame {
+public class BrowseProductsGuest extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BrowseProducts.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BrowseProductsGuest.class.getName());
 
     private ArrayList<Product> allProducts;
     
@@ -34,12 +34,12 @@ public class BrowseProducts extends javax.swing.JFrame {
      * Creates new form BrowseProducts
      */
     
-    public BrowseProducts()
+    public BrowseProductsGuest()
     {
         this(new Order(), null);
     }
     
-    public BrowseProducts(Order basketIn, Customer customerIn) {
+    public BrowseProductsGuest(Order basketIn, Customer customerIn) {
         //Load Products from DB
         DBManager db = new DBManager();
         allProducts = db.loadProducts();
@@ -65,16 +65,12 @@ public class BrowseProducts extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnViewBasket = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstCategories = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstProduct = new javax.swing.JList<>();
-        jLabel5 = new javax.swing.JLabel();
-        txtQuantity = new javax.swing.JTextField();
-        btnAddToBasket = new javax.swing.JButton();
         lblConfirmation = new javax.swing.JLabel();
 
         jLabel2.setText("jLabel2");
@@ -89,13 +85,6 @@ public class BrowseProducts extends javax.swing.JFrame {
         });
 
         jLabel1.setText("PRODUCTS");
-
-        btnViewBasket.setText("VIEW BASKET");
-        btnViewBasket.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewBasketActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("CATEGORIES");
 
@@ -115,44 +104,29 @@ public class BrowseProducts extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(lstProduct);
 
-        jLabel5.setText("Quantity");
-
-        btnAddToBasket.setText("ADD TO BASKET");
-        btnAddToBasket.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddToBasketActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1))
-                    .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblConfirmation, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAddToBasket, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnViewBasket, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblConfirmation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnBack)
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel1))
+                            .addComponent(jLabel3)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -171,15 +145,8 @@ public class BrowseProducts extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblConfirmation))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddToBasket)
-                    .addComponent(btnViewBasket))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addComponent(lblConfirmation)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,78 +176,12 @@ public class BrowseProducts extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        CustomerHome customerHome = new CustomerHome(this.loggedInCustomer);
-        customerHome.setVisible(true);
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.setVisible(true);
         
         this.dispose();
         
     }//GEN-LAST:event_btnBackActionPerformed
-
-    private void btnAddToBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToBasketActionPerformed
-        // TODO add your handling code here:
-        Product selectedProduct = lstProduct.getSelectedValue();
-        
-        String quantityText = txtQuantity.getText();
-        
-        int quantity ;
-        try
-        {
-            quantity = Integer.parseInt(quantityText);
-        }
-        catch(NumberFormatException e)
-        {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Number","Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if(selectedProduct==null)
-        {
-            JOptionPane.showMessageDialog(this, "Please select a product.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (quantity <= 0)
-        {
-            JOptionPane.showMessageDialog(this, "Quanity must be more than 1", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (quantity > selectedProduct.getStockLevel()) 
-        {
-            // Show an error message with the available stock
-            String message = "Not enough stock. Only " + selectedProduct.getStockLevel() + " available.";
-            JOptionPane.showMessageDialog(this, message, "Stock Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        int orderLineId = currentBasket.getOrderLines().size()+1;
-        OrderLine  newOrderLine = new OrderLine(orderLineId, selectedProduct, quantity);
-        
-        currentBasket.addOrderLine(newOrderLine);
-        
-        lblConfirmation.setText("Added to Basket");
-        
-        Timer timer = new Timer(2000, new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                //This code runs after 2 seconds
-                lblConfirmation.setText(""); // Clear the label
-            }
-        });
-
-        // Make the timer only run once
-        timer.setRepeats(false);
-        
-        // Start the timer
-        timer.start();
-                
-    }//GEN-LAST:event_btnAddToBasketActionPerformed
-
-    private void btnViewBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBasketActionPerformed
-        // TODO add your handling code here:
-        Basket basketFrame = new Basket(currentBasket, this.loggedInCustomer);
-        basketFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnViewBasketActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,23 +205,19 @@ public class BrowseProducts extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new BrowseProducts().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new BrowseProductsGuest().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddToBasket;
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnViewBasket;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblConfirmation;
     private javax.swing.JList<String> lstCategories;
     private javax.swing.JList<Product> lstProduct;
-    private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
 }

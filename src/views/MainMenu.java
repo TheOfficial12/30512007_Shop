@@ -52,6 +52,11 @@ public class MainMenu extends javax.swing.JFrame {
         });
 
         btnViewPro.setText("VIEW PRODUCTS");
+        btnViewPro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewProActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,6 +111,13 @@ public class MainMenu extends javax.swing.JFrame {
         staffLogin.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnStaffLogActionPerformed
+
+    private void btnViewProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewProActionPerformed
+        // TODO add your handling code here:
+        BrowseProductsGuest browseProductsGuest = new BrowseProductsGuest();
+        browseProductsGuest.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnViewProActionPerformed
 
     /**
      * @param args the command line arguments
