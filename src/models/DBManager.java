@@ -230,7 +230,7 @@ public class DBManager {
 
 
         // SQL query to insert data into the Orders table
-        String sql = "INSERT INTO Orders (OrderDate, OrderTotal, Status, Username) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Orders (OrderDate, OrderTotal, Status, Username, CardNumber) VALUES (?, ?, ?, ?,?)";
 
         int orderId = 0;
 
@@ -246,7 +246,7 @@ public class DBManager {
             stmt.setDouble(2, order.getOrderTotal());
             stmt.setString(3, "Complete"); // Set a default status
             stmt.setString(4, username);    // The logged-in customer's username [cite: 25]
-
+            stmt.setString(5, order.getPaymentCard());
             // Execute the update
             int rowsAffected = stmt.executeUpdate();
 

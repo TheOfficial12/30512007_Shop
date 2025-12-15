@@ -5,6 +5,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  *
@@ -18,12 +19,14 @@ public class Customer extends User {
     private String postcode;
     private boolean isRegistered;
     private HashMap <Integer, Order> orders;
+    private LinkedList<String> cardNumbers;
     
     
     public Customer()
     {
         super ();
         orders = new HashMap<>();
+        cardNumbers= new LinkedList<>();
     }
     
     public Customer (String usernameIn, String passwordIn, String firstNameIn, String lastNameIn, String addressLine1In, 
@@ -37,6 +40,7 @@ public class Customer extends User {
         postcode = postcodeIn;
         isRegistered = true;
         orders = new HashMap<>();
+        cardNumbers = new LinkedList();
     }
     
     public HashMap <Integer, Order> getOrders()
@@ -91,6 +95,22 @@ public class Customer extends User {
     public void setIsRegistered(boolean isRegisteredIn)
     {
         isRegistered = isRegisteredIn;
+    }
+    public void addCard (String cardNo)
+    {
+        cardNumbers.add(cardNo);
+    }
+    public void removeCard (int nodeNo)
+    {
+        cardNumbers.remove(nodeNo);
+    }
+    public void addFirstCard(String cardNo)
+    {
+        cardNumbers.addFirst(cardNo);
+    }
+    public LinkedList<String> getCardNumbers()
+    {
+        return cardNumbers;
     }
     
     

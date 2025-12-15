@@ -167,32 +167,11 @@ public class Basket extends javax.swing.JFrame {
 
     private void btnBuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuyActionPerformed
         // TODO add your handling code here:
-        currentBasket.calculateOrderTotal();
+        Payment payment = new Payment(this.loggedInCustomer,this.currentBasket);
+        payment.setVisible(true);
+        
+        this.dispose();
 
-        DBManager db = new DBManager();
-        
-        int newOrderId = db.saveOrder(currentBasket, loggedInCustomer.getUsername()); 
-        
-        if (newOrderId>0) {
-        
-            for (OrderLine ol : currentBasket.getOrderLines().values()) 
-            {
-                db.writeOrderLine(ol, newOrderId);
-                
-                Product product = ol.getProductBought();
-                int quantity = ol.getQuantity();
-                
-                //update the stock
-                db.updateStockLevel(product, quantity);
-            }
-            
-            JOptionPane.showMessageDialog(this, "Order placed successfully!");
-            Confirmation confirmFrame = new Confirmation(this.loggedInCustomer);
-            confirmFrame.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error placing order. Please try again.", "Database Error", JOptionPane.ERROR_MESSAGE);
-        }
     }//GEN-LAST:event_btnBuyActionPerformed
 
     /**

@@ -20,6 +20,7 @@ public class Order {
     //Hashmap,Data_Type_Of_Key
     //Integer - orderLineId
     private HashMap<Integer,OrderLine> orderLines;
+    private String paymentCard;
     
     //Getters and Setters
     
@@ -76,6 +77,14 @@ public class Order {
     public void setOrderLines (HashMap<Integer,OrderLine> orderLinesIn)
     {
         orderLines = orderLinesIn;
+    }
+    public String getPaymentCard()
+    {
+        return paymentCard;
+    }
+    public void setPaymentCard(String paymentCard)
+    {
+        this.paymentCard = paymentCard;
     }
     
     //Constructor - 0 parameter
