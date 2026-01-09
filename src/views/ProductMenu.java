@@ -439,6 +439,63 @@ public class ProductMenu extends javax.swing.JFrame {
 
     private void btnBinarySearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinarySearchActionPerformed
         // TODO add your handling code here:
+        DefaultListModel resultModel = new DefaultListModel();
+        
+        try
+        {
+            double targetPrice = Double.parseDouble(txtSearchPrice.getText());
+            //Get current List of products from screen
+            //COnvert ListModel to ArrayList for easier index access
+            ListModel<Product> currentModel = lstProduct.getModel();
+            ArrayList<Product> productList = new ArrayList<>();
+            
+            for (int i = 0; i < currentModel.getSize(); i++)
+            {
+                productList.add(currentModel.getElementAt(i));
+            }
+            
+            //Define Search Boundaries
+            int min = 0;
+            int max = productList.size() - 1;
+            
+            //Loop to keep searching while the range is valid
+            while (min<= max)
+            {
+                //FInding the middle Position
+                int middle= (min + max)/2;
+                Product middleProduct = productList.get(middle);
+                
+                //Check the mIDdle
+                if (middleProduct.getPrice() == targetPrice)
+                {
+                    //Found
+                    resultModel.addElement(middleProduct);
+                    lstProduct.setModel(resultModel);
+                    return; //Stopping here if founf
+                }
+                else
+                {
+                    //Decide to go left or right
+                    if (targetPrice < middleProduct.getPrice())
+                    {
+                        //Target is smaller (cheaper) search left
+                        max = middle - 1;
+                    }
+                    else
+                    {
+                        //Target is larger (expensive) search right
+                        min = middle +1;
+                    }
+                }
+            }
+            //If loop finishes and didnt find it
+            resultModel.addElement("Not Found");
+            lstProduct.setModel(resultModel);
+        }
+        catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for price");
+        }
     }//GEN-LAST:event_btnBinarySearchActionPerformed
 
     /**
