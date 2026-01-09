@@ -73,7 +73,10 @@ public abstract class Product {
         stockLevel = stockLevelIn;
     }
     
+
     @Override
-    public abstract String toString();
+    public String toString() {
+        return this.getProductId() + ": " + this.getProductName() + " - £" + this.price;
+    }
     
 }
