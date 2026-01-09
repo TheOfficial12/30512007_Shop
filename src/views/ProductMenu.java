@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import models.DBManager;
 import models.Product;
 import models.Staff;
@@ -62,8 +63,8 @@ public class ProductMenu extends javax.swing.JFrame {
         btnSelectionSort = new javax.swing.JButton();
         txtSearchPrice = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLinearSearch = new javax.swing.JButton();
+        btnBinarySearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 0));
@@ -130,9 +131,19 @@ public class ProductMenu extends javax.swing.JFrame {
 
         jLabel4.setText("Enter Product Price:");
 
-        jButton2.setText("Linear Search");
+        btnLinearSearch.setText("Linear Search");
+        btnLinearSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLinearSearchActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Binary Search");
+        btnBinarySearch.setText("Binary Search");
+        btnBinarySearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBinarySearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,25 +165,30 @@ public class ProductMenu extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel4)
                             .addComponent(jButton1))
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel3))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton3))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnBubbleSort)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnSelectionSort))
-                                    .addComponent(txtSearchPrice))))))
+                                        .addComponent(btnSelectionSort))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnLinearSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBinarySearch))
+                            .addComponent(txtSearchPrice))
+                        .addGap(1, 1, 1)))
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
@@ -185,15 +201,15 @@ public class ProductMenu extends javax.swing.JFrame {
                     .addComponent(btnBubbleSort)
                     .addComponent(btnSelectionSort)
                     .addComponent(jButton1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearchPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                    .addComponent(btnLinearSearch)
+                    .addComponent(btnBinarySearch))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
@@ -289,8 +305,8 @@ public class ProductMenu extends javax.swing.JFrame {
     private void btnBubbleSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBubbleSortActionPerformed
         // TODO add your handling code here:
         //Get items from the list, and not the database
-        javax.swing.DefaultListModel<Product> currentModel = (javax.swing.DefaultListModel<Product>) lstProduct.getModel();
-        java.util.ArrayList<Product> productList = new java.util.ArrayList<>();
+        DefaultListModel<Product> currentModel = (DefaultListModel<Product>) lstProduct.getModel();
+        ArrayList<Product> productList = new ArrayList<>();
         
         //copy items from list to array list
         for (int i = 0; i < currentModel.getSize();i++)
@@ -339,8 +355,8 @@ public class ProductMenu extends javax.swing.JFrame {
     private void btnSelectionSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectionSortActionPerformed
         // TODO add your handling code here:
         //Get items from the list, and not the database
-        javax.swing.DefaultListModel<Product> currentModel = (javax.swing.DefaultListModel<Product>) lstProduct.getModel();
-        java.util.ArrayList<Product> productList = new java.util.ArrayList<>();
+        DefaultListModel<Product> currentModel = (DefaultListModel<Product>) lstProduct.getModel();
+        ArrayList<Product> productList = new ArrayList<>();
         
         //copy items from list to array list
         for (int i = 0; i < currentModel.getSize();i++)
@@ -382,6 +398,49 @@ public class ProductMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSelectionSortActionPerformed
 
+    private void btnLinearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLinearSearchActionPerformed
+        // TODO add your handling code here:
+        DefaultListModel resultModel = new DefaultListModel();
+        
+        try
+        {
+            double targetPrice = Double.parseDouble(txtSearchPrice.getText());
+            
+            //Get current List of products from screen
+            ListModel<Product> currentList = lstProduct.getModel();
+            boolean isFound = false; //Glag to remeber if its found
+            
+            //Loop to go through every product in the List
+            for (int i = 0; i < currentList.getSize(); i++)
+            {
+                Product p = currentList.getElementAt(i);
+                
+                //Compare to check if the products price match the target
+                if (p.getPrice() == targetPrice)
+                {
+                    isFound = true;
+                    resultModel.addElement(p);
+                }
+            }
+            //If not found
+            if(isFound  == false)
+            {
+                resultModel.addElement("Not Found");
+            }
+            
+            //Updating Screen
+            lstProduct.setModel(resultModel);
+        }
+        catch (NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Number for price");
+        }
+    }//GEN-LAST:event_btnLinearSearchActionPerformed
+
+    private void btnBinarySearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinarySearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBinarySearchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -408,13 +467,13 @@ public class ProductMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBinarySearch;
     private javax.swing.JButton btnBubbleSort;
     private javax.swing.JButton btnDeleteProduct;
     private javax.swing.JButton btnEditProduct;
+    private javax.swing.JButton btnLinearSearch;
     private javax.swing.JButton btnSelectionSort;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
