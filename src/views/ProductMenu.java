@@ -6,6 +6,7 @@ package views;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import models.DBManager;
@@ -58,8 +59,14 @@ public class ProductMenu extends javax.swing.JFrame {
         btnDeleteProduct = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnBubbleSort = new javax.swing.JButton();
+        btnSelectionSort = new javax.swing.JButton();
+        txtSearchPrice = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 0));
 
         jButton1.setText("RETURN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -114,52 +121,91 @@ public class ProductMenu extends javax.swing.JFrame {
             }
         });
 
+        btnSelectionSort.setText("Selection Sort");
+        btnSelectionSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectionSortActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Enter Product Price:");
+
+        jButton2.setText("Linear Search");
+
+        jButton3.setText("Binary Search");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel2)
-                        .addComponent(btnEditProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1))
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(btnDeleteProduct)
-                            .addGap(24, 24, 24)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBubbleSort))
-                .addContainerGap(14, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEditProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnDeleteProduct)
+                                .addGap(24, 24, 24))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton3))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnBubbleSort)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnSelectionSort))
+                                    .addComponent(txtSearchPrice))))))
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnBubbleSort))
+                    .addComponent(btnBubbleSort)
+                    .addComponent(btnSelectionSort)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearchPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditProduct)
                     .addComponent(btnDeleteProduct))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -254,31 +300,30 @@ public class ProductMenu extends javax.swing.JFrame {
         
         //Bubble Sort (Sort ArrayList)
         int n = productList.size();
-        boolean swapRequired;
+        //use boolean flagto control if another pass through the list is needed
+        boolean swapRequired = true;
         
         //Outer Loop
-        for (int i = 0; i<n -1; i++)
+        //The while loop  keeps running as long as a swap happened in the previous pass
+        //If no swaps occur, the list is orted and is stopped
+        while (swapRequired)
         {
-            swapRequired = false;
+            swapRequired = false; //Assume sorted until proven
             
-            //Inner Loooopp
-            for (int j=0; j<n-i-1;j++)
+            //Loop stops at size -2 to compare a with a+1
+            for (int a=0; a<= n -2; a++)
             {
-                //Comparing Price
-                if (productList.get(j).getPrice()>productList.get(j+1).getPrice())
+                //Compare Price
+                if (productList.get(a).getPrice() > productList.get(a+1).getPrice())
                 {
-                    Product temp = productList.get(j);
-                    productList.set(j, productList.get(j+1));
-                    productList.set(j+1,temp);
+                    //Swap
+                    Product temp = productList.get(a);
+                    productList.set(a, productList.get(a+1));
+                    productList.set(a+1,temp);
                     
                     swapRequired = true;
+                    
                 }
-            }
-            
-            //If no swaps required
-            if (!swapRequired)
-            {
-                break;
             }
         }
         
@@ -290,6 +335,52 @@ public class ProductMenu extends javax.swing.JFrame {
             currentModel.addElement(p);
         }
     }//GEN-LAST:event_btnBubbleSortActionPerformed
+
+    private void btnSelectionSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectionSortActionPerformed
+        // TODO add your handling code here:
+        //Get items from the list, and not the database
+        javax.swing.DefaultListModel<Product> currentModel = (javax.swing.DefaultListModel<Product>) lstProduct.getModel();
+        java.util.ArrayList<Product> productList = new java.util.ArrayList<>();
+        
+        //copy items from list to array list
+        for (int i = 0; i < currentModel.getSize();i++)
+        {
+            productList.add(currentModel.getElementAt(i));
+        }
+        
+        //Selection Sort
+        //GO through each position we want to place the cheapest product
+        //a is the position are currently tyring to fit correctly
+        int n = productList.size();
+        
+        
+        for (int a = 0; a<n-1; a++)
+        {
+            //Assume product at a is cheapest for now
+            int min = a;
+            //look through list to find actual cheapest
+            for (int b = a+1; b<n; b++)
+            {
+                if (productList.get(min).getPrice()>productList.get(b).getPrice())
+                {
+                    min=b; //update the index of cheapest product
+                }
+            }
+            
+            //Swap the product at position a with the cheapest one we found at min
+            Product tempProduct = productList.get(a);
+            productList.set(a,productList.get(min)); 
+            productList.set(min, tempProduct);
+            
+        }
+        
+        //Update GUI
+        currentModel.clear();
+        for (Product p: productList)
+        {
+            currentModel.addElement(p);
+        }
+    }//GEN-LAST:event_btnSelectionSortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -320,13 +411,18 @@ public class ProductMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnBubbleSort;
     private javax.swing.JButton btnDeleteProduct;
     private javax.swing.JButton btnEditProduct;
+    private javax.swing.JButton btnSelectionSort;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> lstCategories;
     private javax.swing.JList<Product> lstProduct;
+    private javax.swing.JTextField txtSearchPrice;
     // End of variables declaration//GEN-END:variables
 }
