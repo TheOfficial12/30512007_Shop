@@ -29,7 +29,6 @@ public class Basket extends javax.swing.JFrame {
      */
     public Basket() {
         initComponents();
-        
     }
     
         
@@ -40,6 +39,8 @@ public class Basket extends javax.swing.JFrame {
         this.currentBasket = basketIn;
         this.loggedInCustomer = customerIn;
         
+        lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
+                
         populateTable();
     }
     
@@ -47,7 +48,7 @@ public class Basket extends javax.swing.JFrame {
     
     private void populateTable()
     {
-        DefaultTableModel powerModel = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel powerModel = (DefaultTableModel) lstOrders.getModel();
         
         powerModel.setRowCount(0);
         
@@ -80,14 +81,15 @@ public class Basket extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        lstOrders = new javax.swing.JTable();
         btnAddMoreProducts = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         btnBuy = new javax.swing.JButton();
+        btnRemoveOrderLine = new javax.swing.JButton();
+        lblTotalPrice = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        lstOrders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -98,19 +100,12 @@ public class Basket extends javax.swing.JFrame {
                 "ProductId", "Product", "Price", "Quantity"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(lstOrders);
 
         btnAddMoreProducts.setText("Add More Products");
         btnAddMoreProducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMoreProductsActionPerformed(evt);
-            }
-        });
-
-        btnBack.setText("Back");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
             }
         });
 
@@ -121,42 +116,51 @@ public class Basket extends javax.swing.JFrame {
             }
         });
 
+        btnRemoveOrderLine.setText("Remove Selected Product");
+        btnRemoveOrderLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveOrderLineActionPerformed(evt);
+            }
+        });
+
+        lblTotalPrice.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(37, Short.MAX_VALUE)
-                .addComponent(btnBack)
-                .addGap(33, 33, 33)
-                .addComponent(btnAddMoreProducts)
-                .addGap(28, 28, 28)
-                .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(btnAddMoreProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRemoveOrderLine))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(9, 9, 9)
+                .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddMoreProducts)
-                    .addComponent(btnBack)
-                    .addComponent(btnBuy))
-                .addGap(0, 43, Short.MAX_VALUE))
+                    .addComponent(btnRemoveOrderLine))
+                .addGap(18, 18, 18)
+                .addComponent(btnBuy)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        BrowseProducts browseProducts = new BrowseProducts(this.currentBasket, this.loggedInCustomer);
-        browseProducts.setVisible(true);
-        
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnAddMoreProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMoreProductsActionPerformed
         // TODO add your handling code here:
@@ -173,6 +177,34 @@ public class Basket extends javax.swing.JFrame {
         this.dispose();
 
     }//GEN-LAST:event_btnBuyActionPerformed
+
+    private void btnRemoveOrderLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveOrderLineActionPerformed
+        // TODO add your handling code here:
+        //Get selected row index
+        int selectedRow = lstOrders.getSelectedRow();
+        
+        if (selectedRow == -1)
+        {
+            JOptionPane.showMessageDialog(this,"Error: Please Choose a Product to remove");
+        }
+        else
+        {
+            //Get product id from coloumn 0 of the selected row
+            //parse to string, then to int
+            String idString = lstOrders.getValueAt(selectedRow, 0).toString();
+            int productId = Integer.parseInt(idString);
+            
+            //cqll method
+            currentBasket.removeOrderLine(productId);
+            
+            //Update View and show confirmation
+            JOptionPane.showMessageDialog(this, "Product successfully removed");
+            populateTable();
+            
+            lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
+            
+        }
+    }//GEN-LAST:event_btnRemoveOrderLineActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,9 +233,10 @@ public class Basket extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMoreProducts;
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnBuy;
+    private javax.swing.JButton btnRemoveOrderLine;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblTotalPrice;
+    private javax.swing.JTable lstOrders;
     // End of variables declaration//GEN-END:variables
 }

@@ -76,6 +76,7 @@ public class Payment extends javax.swing.JFrame {
         btnDefaultAdd = new javax.swing.JButton();
         txtDefault = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,7 +114,20 @@ public class Payment extends javax.swing.JFrame {
             }
         });
 
+        txtDefault.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDefaultActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Add New Default card:");
+
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,9 +137,9 @@ public class Payment extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConfirm)
-                    .addComponent(jLabel2))
-                .addGap(8, 8, 8)
+                    .addComponent(jLabel2)
+                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -133,7 +147,8 @@ public class Payment extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDefaultAdd)
-                    .addComponent(btnDeleteCard))
+                    .addComponent(btnDeleteCard)
+                    .addComponent(btnConfirm))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -146,10 +161,7 @@ public class Payment extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConfirm)
-                        .addContainerGap(21, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,10 +172,14 @@ public class Payment extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDefaultAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDeleteCard)
-                        .addGap(54, 54, 54))))
+                        .addComponent(btnDefaultAdd)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDeleteCard)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirm)
+                    .addComponent(btnBack))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -224,7 +240,7 @@ public class Payment extends javax.swing.JFrame {
 
     private void btnDefaultAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDefaultAddActionPerformed
         // TODO add your handling code here:
-        String rawCardNum = txtCardNo.getText();
+        String rawCardNum = txtDefault.getText();
         if (rawCardNum.length() < 8)
         {
             JOptionPane.showMessageDialog(this, "Error: Enter a Valid Card Number");
@@ -254,6 +270,18 @@ public class Payment extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteCardActionPerformed
 
+    private void txtDefaultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDefaultActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDefaultActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        Basket basket = new Basket(this.currentBasket, this.loggedInCustomer);
+        basket.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -281,6 +309,7 @@ public class Payment extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnDefaultAdd;
     private javax.swing.JButton btnDeleteCard;

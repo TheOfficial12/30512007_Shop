@@ -1,4 +1,5 @@
 package models;
+import java.sql.Timestamp;
 import java.sql.Connection; // Import Connection
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -142,7 +143,7 @@ public class DBManager {
                 while (rs.next()) 
                 {
                     int orderId = rs.getInt("OrderId");
-                    java.util.Date orderDate = new java.util.Date(rs.getDate("OrderDate").getTime());
+                    Timestamp orderDate = rs.getTimestamp("OrderDate");
                     double orderTotal = rs.getDouble("OrderTotal");
                     String status = rs.getString("Status");
                     Order order = new Order(orderId, orderDate, orderTotal, status);
@@ -239,10 +240,10 @@ public class DBManager {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             // Convert date database
-            java.sql.Date sqlDate = new java.sql.Date(order.getOrderDate().getTime());
+            Timestamp sqlDate = new Timestamp(order.getOrderDate().getTime());
 
             // Set the parameters for the query
-            stmt.setDate(1, sqlDate);
+            stmt.setTimestamp(1, sqlDate);
             stmt.setDouble(2, order.getOrderTotal());
             stmt.setString(3, "Complete"); // Set a default status
             stmt.setString(4, username);    // The logged-in customer's username [cite: 25]

@@ -6,6 +6,8 @@ package models;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -130,4 +132,25 @@ public class Order {
             this.orderTotal = total;
         }
     
+    public void removeOrderLine(int productId)
+    {
+        // Create an Iterator to safely loop through the basket
+        Iterator<Map.Entry<Integer, OrderLine>> iter = orderLines.entrySet().iterator();
+        while (iter.hasNext())
+        {
+            Map.Entry<Integer, OrderLine> olEntry = iter.next();
+            OrderLine currentLine = olEntry.getValue();
+            
+            // Check if this line contains the product we selected
+            if(currentLine.getProductBought().getProductId() == productId)
+            {
+                //We found the product inside this line! Remove the whole line.
+                iter.remove();
+            
+                // Deduct the cost of that line from the total
+                this.orderTotal = this.orderTotal - currentLine.getLineTotal();
+            }
+            
+        }
+    }
 }
