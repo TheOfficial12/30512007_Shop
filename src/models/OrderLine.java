@@ -46,6 +46,7 @@ public class OrderLine {
     {
         return quantity;
     }
+    //Setter
     public void setQuantity (int quantityIn)
     {
         quantity = quantityIn;

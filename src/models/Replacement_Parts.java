@@ -18,7 +18,7 @@ public class Replacement_Parts extends Product {
         this.partFor = partFor;
     }
     
-    // --- Constructors ---
+    //Constructors
 
     public Replacement_Parts() {
         super();

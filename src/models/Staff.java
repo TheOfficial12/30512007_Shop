@@ -13,6 +13,7 @@ public class Staff extends User{
     private String position;
     private double salary;
     
+    //Constructors
     public Staff()
     {
         
@@ -25,6 +26,7 @@ public class Staff extends User{
         salary = salaryIn;
     }
     
+    //Getters and setters
     public String getPosition()
     {
         return position;

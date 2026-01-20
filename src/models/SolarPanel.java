@@ -12,6 +12,7 @@ public class SolarPanel extends Product{
     
     private int wattageOutput;
     
+    //Constructors
     public SolarPanel()
     {
         
@@ -28,6 +29,8 @@ public class SolarPanel extends Product{
         super (productIdIn, productNameIn, priceIn, stockLevelIn);
         wattageOutput = wattageOutputIn;
     }
+    
+    //Getters and Setters
     
     public int getWattageOutput()
     {

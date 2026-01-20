@@ -16,11 +16,13 @@ public abstract class Product {
     private int stockLevel;
     
     
+    //Empty constructor
     public Product() 
     {
         
     }
     
+    //COnstructor everything except product id
     public Product (String productNameIn, double priceIn, int stockLevelIn)
     {
         productId = 0;
@@ -29,6 +31,7 @@ public abstract class Product {
         stockLevel = stockLevelIn;               
     }
     
+    //COnstructor with everything
     public Product (int productIdIn, String productNameIn, double priceIn, int stockLevelIn)
     {
         productId = productIdIn;
@@ -37,6 +40,7 @@ public abstract class Product {
         stockLevel = stockLevelIn;
     }
     
+    //GEtter and setter
     public int getProductId()
     {
         return productId;
@@ -46,6 +50,7 @@ public abstract class Product {
         productId = productIdIn;
     }
     
+    //Getter adn Setter
     public String getProductName()
     {
         return productName;
@@ -55,6 +60,7 @@ public abstract class Product {
         productName = productNameIn;
     }
     
+    //Get and setter
     public double getPrice()
     {
         return price;
@@ -64,6 +70,7 @@ public abstract class Product {
         price = priceIn;
     }
     
+    //getter and setter
     public int getStockLevel()
     {
         return stockLevel;

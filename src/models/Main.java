@@ -13,7 +13,7 @@ public class Main {
         // Create an instance of DBManager
         DBManager dbManager = new DBManager();
 
-        // --- Test loading customers ---
+        // Test loading customers
         System.out.println("--- Loading Customers ---");
         ArrayList<Customer> loadedCustomers = dbManager.loadCustomers();
 

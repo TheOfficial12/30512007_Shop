@@ -65,6 +65,7 @@ public class ProductMenu extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnLinearSearch = new javax.swing.JButton();
         btnBinarySearch = new javax.swing.JButton();
+        btnAddProduct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 0));
@@ -145,6 +146,13 @@ public class ProductMenu extends javax.swing.JFrame {
             }
         });
 
+        btnAddProduct.setText("ADD PRODUCT");
+        btnAddProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProductActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,7 +180,9 @@ public class ProductMenu extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnBinarySearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnDeleteProduct))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -212,9 +222,11 @@ public class ProductMenu extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditProduct)
-                    .addComponent(btnDeleteProduct))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDeleteProduct)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEditProduct)
+                        .addComponent(btnAddProduct)))
                 .addGap(18, 18, 18))
         );
 
@@ -492,6 +504,14 @@ public class ProductMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBinarySearchActionPerformed
 
+    private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
+        // TODO add your handling code here:
+        AddProduct addProduct = new AddProduct(this.loggedInStaff);
+        addProduct.setVisible(true);
+        
+        this.dispose();
+    }//GEN-LAST:event_btnAddProductActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -518,6 +538,7 @@ public class ProductMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddProduct;
     private javax.swing.JButton btnBinarySearch;
     private javax.swing.JButton btnBubbleSort;
     private javax.swing.JButton btnDeleteProduct;

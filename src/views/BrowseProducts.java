@@ -20,8 +20,10 @@ import javax.swing.Timer;
  */
 public class BrowseProducts extends javax.swing.JFrame {
     
+    //Logger
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BrowseProducts.class.getName());
 
+    //Data Vars
     private ArrayList<Product> allProducts;
     
     private Order currentBasket;
@@ -30,15 +32,13 @@ public class BrowseProducts extends javax.swing.JFrame {
     
     
     
-    /**
-     * Creates new form BrowseProducts
-     */
-    
+    //Empty Constructor
     public BrowseProducts()
     {
         this(new Order(), null);
     }
     
+    //Main Constructor
     public BrowseProducts(Order basketIn, Customer customerIn) {
         //Load Products from DB
         DBManager db = new DBManager();
@@ -46,9 +46,11 @@ public class BrowseProducts extends javax.swing.JFrame {
         
         initComponents();
         
+        //Save Refs
         this.currentBasket = basketIn;
         this.loggedInCustomer = customerIn;
         
+        //Init list empty
         lstProduct.setModel(new DefaultListModel<Product>());
         
     }
@@ -189,6 +191,7 @@ public class BrowseProducts extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Filter list by category
     private void lstCategoriesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstCategoriesValueChanged
         // TODO add your handling code here:
         //Get Selected Category
@@ -220,10 +223,10 @@ public class BrowseProducts extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnBackActionPerformed
 
+    
     private void btnAddToBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToBasketActionPerformed
         // TODO add your handling code here:
-        Product selectedProduct = lstProduct.getSelectedValue();
-        
+        Product selectedProduct = lstProduct.getSelectedValue();    
         String quantityText = txtQuantity.getText();
         
         int quantity ;
@@ -243,6 +246,7 @@ public class BrowseProducts extends javax.swing.JFrame {
             return;
         }
         
+        //Stock check
         if (quantity <= 0)
         {
             JOptionPane.showMessageDialog(this, "Quanity must be more than 1", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -256,7 +260,7 @@ public class BrowseProducts extends javax.swing.JFrame {
             return;
         }
         
-        int orderLineId = currentBasket.getOrderLines().size()+1;
+        int orderLineId = selectedProduct.getProductId();
         OrderLine  newOrderLine = new OrderLine(orderLineId, selectedProduct, quantity);
         
         currentBasket.addOrderLine(newOrderLine);

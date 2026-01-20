@@ -15,6 +15,7 @@ public class User {
     private String firstName;
     private String lastName;
     
+    //Constructors
     public User()
     {
         
@@ -27,6 +28,8 @@ public class User {
         firstName = firstNameIn;
         lastName = lastNameIn;
     }
+    
+    //Getters and Setters
     
     public String getUsername()
     {

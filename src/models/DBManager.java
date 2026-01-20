@@ -14,32 +14,38 @@ import java.util.HashMap;
  */
 public class DBManager {
 
+    //DB Connection String 
     private static final String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
     private static final String DB_URL = "jdbc:ucanaccess://Data/ShopDB.accdb";
 
+    //Delete user details and orders
     public void unregisterCustomer(String username)
     {
+        //SQL to delete data from 3 tables
         String sqlDeleteOrderLine = "DELETE FROM OrderLines WHERE OrderId IN (SELECT OrderId FROM Orders WHERE Username=?)";
         String sqlDeleteOrders = "DELETE FROM Orders WHERE Username = ?";
         String sqlDeleteCustomer = "DELETE FROM Customers WHERE Username = ?";
         
         try (Connection conn = DriverManager.getConnection(DB_URL))
         {
-            //OrderLines
+            
+            //Delete items first
             try (PreparedStatement stmt = conn.prepareStatement(sqlDeleteOrderLine))
             {
                 stmt.setString(1,username);
                 stmt.executeUpdate();
             }
             
-            //Orders
+            
+            //Delete order next
             try (PreparedStatement stmt = conn.prepareStatement(sqlDeleteOrders))
             {
                 stmt.setString(1, username);
                 stmt.executeUpdate();
             }
             
-            //Customer
+            
+            //Delete user next 
             try(PreparedStatement stmt = conn.prepareStatement(sqlDeleteCustomer))
             {
                 stmt.setString(1,username);
@@ -52,8 +58,10 @@ public class DBManager {
         }
     }
 
+    //Remove product from Data base
     public void deleteProduct(int productId)
     {
+        //SQL to delete Product 
         String sql = "DELETE FROM Products WHERE ProductId=(?)";
         try(Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql))
@@ -68,10 +76,11 @@ public class DBManager {
         }
     }
 
+    //Get all the customers
     public ArrayList<Customer> loadCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
 
-        // This is "try-with-resources". It's much simpler!
+        
         // It automatically declares and closes conn, stmt, and rs.
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement();
@@ -79,7 +88,7 @@ public class DBManager {
 
             // Loop through results
             while (rs.next()) {
-                // **IMPORTANT:** Check your Access DB column names match these!
+                //Get columns
                 String username = rs.getString("Username");
                 String password = rs.getString("Password");
                 String firstName = rs.getString("FirstName");
@@ -96,11 +105,12 @@ public class DBManager {
         } catch (SQLException e) {
             System.err.println("Error loading customers: " + e.getMessage()); // Basic error message
         }
-        // No 'finally' block needed to close connections!
+        
 
         return customers;
     }
 
+    //load all Staf 
     public ArrayList<Staff> loadStaff() {
         ArrayList<Staff> staffList = new ArrayList<>();
 
@@ -109,8 +119,9 @@ public class DBManager {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Staff")) {
 
+            //Loop through results
             while (rs.next()) {
-                // **IMPORTANT:** Check your Access DB column names match these!
+                //Get columns
                 String username = rs.getString("Username");
                 String password = rs.getString("Password");
                 String firstName = rs.getString("FirstName");
@@ -129,9 +140,10 @@ public class DBManager {
         return staffList;
     }
     
-
+    //Load all Orders
     public HashMap<Integer, Order> loadOrders(String username) {
         HashMap<Integer, Order> orders = new HashMap<>();
+        //SQL to get the orders based on the username 
         String sql = "SELECT * FROM Orders WHERE Username = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -143,9 +155,12 @@ public class DBManager {
                 while (rs.next()) 
                 {
                     int orderId = rs.getInt("OrderId");
+                    //Get full time
                     Timestamp orderDate = rs.getTimestamp("OrderDate");
                     double orderTotal = rs.getDouble("OrderTotal");
                     String status = rs.getString("Status");
+                    
+                    //Map to obj
                     Order order = new Order(orderId, orderDate, orderTotal, status);
                     orders.put(orderId, order);
                 }
@@ -158,7 +173,7 @@ public class DBManager {
         return orders;
     }
        
-
+    //Get all product
     public ArrayList<Product> loadProducts() {
         ArrayList<Product> allProducts = new ArrayList<>();
 
@@ -178,13 +193,13 @@ public class DBManager {
                 int wattage = rs.getInt("WattageOutput");
                 String partFor = rs.getString("PartFor");
 
-
+                //Chekc category and create object
                 if (category != null && category.equalsIgnoreCase("Heat Pump")) {
                     // Create Heatpump, passing the efficiency data
                     Heatpump hp = new Heatpump(productId, productName, price, stockLevel, efficiency);
                     allProducts.add(hp);
                 }
-                // --- FIX 2: Changed "SolarPanel" to "Solar Panel" (with space) ---
+                
                 else if (category != null && category.equalsIgnoreCase("Solar Panel")) {
                     // Create SolarPanel, passing the wattage data
                     SolarPanel sp = new SolarPanel(productId, productName, price, stockLevel, wattage);
@@ -204,9 +219,9 @@ public class DBManager {
         return allProducts;
     }
 
-
+    //CHeck customer login
     public Customer customerLogin(String username, String password) {
-        ArrayList<Customer> customers = loadCustomers(); // Get all customers
+        ArrayList<Customer> customers = loadCustomers(); 
         for (Customer c : customers) { // Loop through them
             // Check username AND password match
             if (username.equals(c.getUsername()) && password.equals(c.getPassword())) {
@@ -215,7 +230,8 @@ public class DBManager {
         }
         return null; // No match found
     }
-
+    
+    //Check staff Login
     public Staff staffLogin(String username, String password) {
         ArrayList<Staff> staffList = loadStaff(); // Get all staff
         for (Staff s : staffList) { // Loop through them
@@ -227,26 +243,26 @@ public class DBManager {
         return null; // No match found
     }
 
+    
     public int saveOrder(Order order, String username) {
-
-
+        
         // SQL query to insert data into the Orders table
         String sql = "INSERT INTO Orders (OrderDate, OrderTotal, Status, Username, CardNumber) VALUES (?, ?, ?, ?,?)";
 
         int orderId = 0;
-
-        // Using try-with-resources for the connection and statement
+     
+                
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Convert date database
+            // Convert time
             Timestamp sqlDate = new Timestamp(order.getOrderDate().getTime());
 
             // Set the parameters for the query
             stmt.setTimestamp(1, sqlDate);
             stmt.setDouble(2, order.getOrderTotal());
             stmt.setString(3, "Complete"); // Set a default status
-            stmt.setString(4, username);    // The logged-in customer's username [cite: 25]
+            stmt.setString(4, username);    // The logged-in customer's username 
             stmt.setString(5, order.getPaymentCard());
             // Execute the update
             int rowsAffected = stmt.executeUpdate();
@@ -254,6 +270,7 @@ public class DBManager {
             // If rowsAffected > 0, the insert was successful
             if (rowsAffected > 0)
             {
+                //GEt generate ID
                 try (ResultSet rs = stmt.getGeneratedKeys())
                 {
                     if (rs.next())
@@ -274,6 +291,7 @@ public class DBManager {
 
     }
 
+    //Save 9items in order 
    public void writeOrderLine (OrderLine ol, int orderId)
    {
        String sql = "INSERT INTO ORDERLINES (ProductId, Quantity, LineTotal, OrderId) VALUES (?,?,?,?)";
@@ -293,12 +311,11 @@ public class DBManager {
        }
    }
 
+    //Updating Stock Level
     public boolean updateStockLevel(Product product, int quantityPurchased) {
-
-
         int newStockLevel = product.getStockLevel() - quantityPurchased;
-
-
+        
+        //Sql to update the stock level from the product id
         String sql = "UPDATE Products SET StockLevel = ? WHERE ProductID = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -319,6 +336,7 @@ public class DBManager {
         }
     }
     
+    //Updating the product details
     public boolean updateProduct (Product p)
     {
         String sql ="UPDATE Products SET ProductName = ?, Price = ?, StockLevel = ?, ProductType = ?, WattageOutput = ?, EfficiencyRating = ?, PartFor = ? WHERE ProductId = ?";
@@ -329,6 +347,7 @@ public class DBManager {
             stmt.setDouble(2, p.getPrice());
             stmt.setInt(3, p.getStockLevel());
             
+            //Set specific fields based on the types 
             if(p instanceof SolarPanel)
             {
                 stmt.setString(4, "Solar Panel");
@@ -362,6 +381,7 @@ public class DBManager {
         }
     }
     
+    //Updating the user details
     public boolean updateCustomer(Customer c)
     {
         String sql = "UPDATE Customers SET Password = ?, FirstName = ?, LastName = ?, AddressLine1 = ?, AddressLine2 = ?, Town = ?, Postcode = ? WHERE Username = ?";
@@ -386,6 +406,7 @@ public class DBManager {
         }
     }
     
+    //Registering a new user
     public boolean registerCustomer (Customer c)
     {
         String sql = "INSERT INTO Customers (Username, Password, FirstName, LastName, AddressLine1, AddressLine2, Town, Postcode) VALUES (?,?,?,?,?,?,?,?)";
@@ -407,6 +428,49 @@ public class DBManager {
         catch(SQLException e)
         {
             System.out.println("Error registering customer: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean addProduct (Product p)
+    {
+        String addSql = "INSERT INTO PRODUCTS (ProductName, Price, StockLevel, ProductType, WattageOutput, EfficiencyRating, PartFor) VALUES (?,?,?,?,?,?,?)";
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(addSql))
+        {
+            stmt.setString(1, p.getProductName());
+            stmt.setDouble(2, p.getPrice());
+            stmt.setInt(3, p.getStockLevel());
+            
+            //Set specific fields based on the types 
+            if(p instanceof SolarPanel)
+            {
+                stmt.setString(4, "Solar Panel");
+                stmt.setInt(5, ((SolarPanel) p).getWattageOutput()); // Wattage
+                stmt.setObject(6, null); // null
+                stmt.setObject(7, null);
+            }
+            else if (p instanceof Heatpump)
+            {
+                stmt.setString(4, "Heat Pump");
+                stmt.setObject(5, null); // null
+                stmt.setDouble(6, ((Heatpump) p).getEfficiencyRating()); // Efficiency
+                stmt.setObject(7, null); // null
+            }
+            else if (p instanceof Replacement_Parts)
+            {
+                stmt.setString(4, "Replacement_Parts");
+                stmt.setObject(5, null); 
+                stmt.setObject(6, null); 
+                stmt.setString(7, ((Replacement_Parts) p).getPartFor());
+            }
+            
+            int rows = stmt.executeUpdate();
+            return rows>0;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error Adding Product " + e.getMessage());
             return false;
         }
     }

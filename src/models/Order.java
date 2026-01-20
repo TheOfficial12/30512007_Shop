@@ -80,6 +80,8 @@ public class Order {
     {
         orderLines = orderLinesIn;
     }
+    
+    //Get/Set for payment card
     public String getPaymentCard()
     {
         return paymentCard;

@@ -39,6 +39,7 @@ public class Basket extends javax.swing.JFrame {
         this.currentBasket = basketIn;
         this.loggedInCustomer = customerIn;
         
+        //Label of the total price
         lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
                 
         populateTable();
