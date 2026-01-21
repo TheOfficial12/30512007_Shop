@@ -4,6 +4,14 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import models.Customer;
 
 /**
@@ -11,6 +19,12 @@ import models.Customer;
  * @author thomm
  */
 public class Confirmation extends javax.swing.JFrame {
+    
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Confirmation.class.getName());
 
@@ -22,6 +36,65 @@ public class Confirmation extends javax.swing.JFrame {
     public Confirmation(Customer customerIn) {
         initComponents();
         this.loggedInCustomer = customerIn;
+        applyCustomDesign();
+    }
+    
+    private void applyCustomDesign()
+    {
+        
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        btnReturnToHome.setBorder(UIManager.getBorder("Button.border"));
+        btnReturnToHome.setOpaque(false);
+        btnReturnToHome.setContentAreaFilled(true);
+        btnReturnToHome.setFocusPainted(false);
+        btnReturnToHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnReturnToHome.putClientProperty("FlatLaf.style", 
+                "arc: 25;" +
+                "borderWidth: 0;" );
+        
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        try
+        {
+            String tickPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\tick_circle.png";
+            ImageIcon tickIcon = new ImageIcon(tickPath);
+            //Resize image
+            
+            lblTickIcon.setIcon(tickIcon);
+            
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        
     }
 
     /**
@@ -35,9 +108,15 @@ public class Confirmation extends javax.swing.JFrame {
 
         btnReturnToHome = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabelLogo = new javax.swing.JLabel();
+        lblTickIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnReturnToHome.setBackground(new java.awt.Color(0, 210, 90));
+        btnReturnToHome.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReturnToHome.setForeground(new java.awt.Color(0, 0, 0));
         btnReturnToHome.setText("Retun To Home");
         btnReturnToHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -45,9 +124,16 @@ public class Confirmation extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Thank You For Your Order");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("ORDER CONFIRMED!");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Thank You For Your Purchase. Your Order Has Been Placed Successfully");
+
+        lblTickIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -56,21 +142,37 @@ public class Confirmation extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(btnReturnToHome))
+                        .addGap(149, 149, 149)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                        .addGap(87, 87, 87)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(btnReturnToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(159, 159, 159)
+                        .addComponent(lblTickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
-                .addComponent(btnReturnToHome)
-                .addGap(59, 59, 59))
+                .addContainerGap(33, Short.MAX_VALUE)
+                .addComponent(lblTickIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReturnToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -103,13 +205,27 @@ public class Confirmation extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(() -> new Confirmation().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new BrowseProducts().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReturnToHome;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelLogo;
+    private javax.swing.JLabel lblTickIcon;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,8 +4,22 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import models.Customer;
 import models.DBManager;
 import models.Order;
@@ -18,6 +32,12 @@ import models.Product;
  */
 public class Payment extends javax.swing.JFrame {
     
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Payment.class.getName());
 
     private Order currentBasket;
@@ -25,11 +45,19 @@ public class Payment extends javax.swing.JFrame {
     /**
      * Creates new form Payment
      */
+    
+    public Payment() {
+        
+        initComponents();
+        applyCustomDesign();
+    }
+    
     public Payment(Customer customer, Order basket) {
         initComponents();
         this.loggedInCustomer = customer;
         this.currentBasket = basket;
-        
+        applyCustomDesign();
+
         show_cards();
     }
 
@@ -56,6 +84,127 @@ public class Payment extends javax.swing.JFrame {
         lstCardNo.setModel(cardsModel);
     }
     
+    private void applyCustomDesign()
+    {
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        JButton[] mainBtns = {btnDefaultAdd, btnConfirm};
+        
+        for (JButton btn : mainBtns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            btn.putClientProperty("FlatLaf.style", 
+                "arc: 25;" +
+                "borderWidth: 0;" );
+        }
+        
+        JButton[] secBtns = {btnBack, btnDeleteCard, btnAdd};
+        
+        for (JButton sbtns : secBtns)
+        {
+            sbtns.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+            
+            sbtns.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            
+            //Opacity to show colours
+            sbtns.setOpaque(false);
+            sbtns.setContentAreaFilled(true);
+            sbtns.setFocusPainted(false);
+            
+            //DEFAUlt style
+            sbtns.setBackground(BTN_DEFAULT);
+            sbtns.setForeground(TEXT_WHITE);
+            sbtns.setFont(new Font ("Segoe UI", Font.BOLD, 16));
+            sbtns.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            sbtns.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(sbtns);
+        }  
+        
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        JComponent[] inputs = {jScrollPane1, txtCardNo, txtDefault};
+        
+        for(JComponent input : inputs)
+        {
+            input.putClientProperty("FlatLaf.style",
+                    "arc:15;" +
+                    "borderWidth : 2;" +
+                    "borderColor: #00D25A;" +
+                    "background: #323232; " + 
+                    "foreground: #ffffff;");
+        }
+        txtCardNo.putClientProperty("JComponent.roundRect", true);
+        txtDefault.putClientProperty("JComponent.roundRect", true);
+        
+        JList<?>[] lists = {lstCardNo};
+        for (JList<?> list : lists)
+        {
+            //Unselected colour
+            list.setBackground(new Color(50,50,50));
+            list.setForeground(Color.WHITE);
+            
+            //When a row is selected
+            list.setSelectionBackground(ACCENT_GREEN);
+            list.setSelectionForeground(TEXT_BLACK);
+            
+            list.putClientProperty("FlatLaf.style", "selectionArc: 10; selectionInsets:2, 2, 2, 2;");
+        }
+        
+        
+    }
+    
+    private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,15 +226,32 @@ public class Payment extends javax.swing.JFrame {
         txtDefault = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Enter Card Number:");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Select Card Number:");
 
+        lstCardNo.setBackground(new java.awt.Color(50, 50, 50));
+        lstCardNo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lstCardNo.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(lstCardNo);
 
+        txtCardNo.setBackground(new java.awt.Color(50, 50, 50));
+        txtCardNo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtCardNo.setForeground(new java.awt.Color(255, 255, 255));
+        txtCardNo.setCaretColor(new java.awt.Color(255, 255, 255));
+
+        btnAdd.setBackground(new java.awt.Color(24, 24, 24));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Add Card");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,20 +259,29 @@ public class Payment extends javax.swing.JFrame {
             }
         });
 
-        btnConfirm.setText("Confirm Payement Method");
+        btnConfirm.setBackground(new java.awt.Color(0, 210, 90));
+        btnConfirm.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnConfirm.setForeground(new java.awt.Color(0, 0, 0));
+        btnConfirm.setText("CONFIRM");
         btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmActionPerformed(evt);
             }
         });
 
-        btnDeleteCard.setText("Delete Selected Card");
+        btnDeleteCard.setBackground(new java.awt.Color(24, 24, 24));
+        btnDeleteCard.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDeleteCard.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteCard.setText("DELETE CARD");
         btnDeleteCard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteCardActionPerformed(evt);
             }
         });
 
+        btnDefaultAdd.setBackground(new java.awt.Color(0, 210, 90));
+        btnDefaultAdd.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnDefaultAdd.setForeground(new java.awt.Color(0, 0, 0));
         btnDefaultAdd.setText("Add Card");
         btnDefaultAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,71 +289,103 @@ public class Payment extends javax.swing.JFrame {
             }
         });
 
+        txtDefault.setBackground(new java.awt.Color(50, 50, 50));
+        txtDefault.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDefault.setForeground(new java.awt.Color(255, 255, 255));
+        txtDefault.setCaretColor(new java.awt.Color(255, 255, 255));
         txtDefault.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDefaultActionPerformed(evt);
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Add New Default card:");
 
-        btnBack.setText("Back");
+        btnBack.setBackground(new java.awt.Color(24, 24, 24));
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("BACK");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("PAYMENT METHOD");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdd)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDefaultAdd)
-                    .addComponent(btnDeleteCard)
-                    .addComponent(btnConfirm))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDefaultAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(12, 12, 12)
+                        .addComponent(btnDeleteCard, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCardNo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDefaultAdd)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDeleteCard)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDefaultAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm)
-                    .addComponent(btnBack))
+                    .addComponent(btnBack)
+                    .addComponent(btnDeleteCard))
                 .addGap(24, 24, 24))
         );
 
@@ -302,9 +509,21 @@ public class Payment extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(() -> new Payment().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Payment().setVisible(true);
+            }
+        });
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -316,6 +535,8 @@ public class Payment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> lstCardNo;
     private javax.swing.JTextField txtCardNo;
