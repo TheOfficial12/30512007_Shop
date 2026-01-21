@@ -4,7 +4,20 @@
  */
 package views;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 import models.DBManager;
 import models.Staff;
 
@@ -14,6 +27,13 @@ import models.Staff;
  */
 public class StaffLogin extends javax.swing.JFrame {
     
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color DEFAULT_COLOUR = new Color (50, 50, 50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffLogin.class.getName());
 
     /**
@@ -21,7 +41,107 @@ public class StaffLogin extends javax.swing.JFrame {
      */
     public StaffLogin() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        btnLogin.setBorder(UIManager.getBorder("Button.border"));
+        btnLogin.setOpaque(false);
+        btnLogin.setContentAreaFilled(true);
+        btnLogin.setFocusPainted(false);
+        btnLogin.putClientProperty("FlatLaf.style", 
+                "arc: 25;" +
+                "borderWidth: 0;" );
+        btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        //Buttons to Opagque and round shape)
+        JButton[] btns = {btnReturn};
+        
+        for (JButton btn : btns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+           
+            btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            
+            //Opacity to show colours
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            
+            //DEFAUlt style
+            btn.setBackground(BTN_DEFAULT);
+            btn.setForeground(TEXT_WHITE);
+            btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(btn);
+        }  
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        JTextComponent[] inputs = {txtUsername, txtPassword};
+        for (JTextComponent input : inputs)
+        {
+            input.setOpaque(false);
+            input.setBorder(UIManager.getBorder("TextField.border"));
+            
+            input.putClientProperty("FlatLaf.style",
+                    "arc: 15;" + //Rounded Corners
+                    "borderColor: #00D25A;"+ //Bright Gren
+                    "borderWidth: 2;" + //Visible green outline
+                    "focusWidth: 1;"+
+                    "caretColor: #ffffff;" + //White blinking cursor
+                    " selectionBackground : #00D25A;" +
+                    "selectionForeground: #000000;");
+            input.setMargin(new Insets(5, 10, 5, 10));
+        }
     }
+    
+     private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,27 +159,39 @@ public class StaffLogin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         btnReturn = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("STAFF LOGIN");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username");
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Password");
 
+        txtUsername.setBackground(new java.awt.Color(50, 50, 50));
+        txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);
             }
         });
 
+        txtPassword.setBackground(new java.awt.Color(50, 50, 50));
+        txtPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);
             }
         });
 
+        btnLogin.setBackground(new java.awt.Color(0, 210, 90));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,6 +199,9 @@ public class StaffLogin extends javax.swing.JFrame {
             }
         });
 
+        btnReturn.setBackground(new java.awt.Color(24, 24, 24));
+        btnReturn.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnReturn.setForeground(new java.awt.Color(255, 255, 255));
         btnReturn.setText("RETURN TO MAIN MENU");
         btnReturn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,45 +214,48 @@ public class StaffLogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(176, 176, 176)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addContainerGap(134, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                            .addComponent(txtPassword)))
+                            .addComponent(jLabel3)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(btnLogin))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addComponent(btnReturn)))
-                .addContainerGap(128, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(131, 131, 131))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addGap(4, 4, 4)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addComponent(btnLogin)
-                .addGap(18, 18, 18)
-                .addComponent(btnReturn)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,6 +332,7 @@ public class StaffLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables

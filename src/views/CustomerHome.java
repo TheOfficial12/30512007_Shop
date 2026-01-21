@@ -4,16 +4,35 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import models.Customer;
 import models.Order;
 import models.DBManager;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 /**
  *
  * @author 30512007
  */
 public class CustomerHome extends javax.swing.JFrame {
+    
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color DEFAULT_COLOUR = new Color (50, 50, 50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerHome.class.getName());
 
@@ -31,7 +50,82 @@ public class CustomerHome extends javax.swing.JFrame {
     {
         initComponents();
         this.loggedInCustomer = customerIn;
+        
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        //Buttons to Opagque and round shape)
+        JButton[] btns = {btnBrowseProducts, btnViewOrders, btnEditDetails, btnUnregisterFromShop, btnLogOut};
+        
+        for (JButton btn : btns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+            
+            btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            
+            //Opacity to show colours
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            
+            //DEFAUlt style
+            btn.setBackground(BTN_DEFAULT);
+            btn.setForeground(TEXT_WHITE);
+            btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(btn);
+        }  
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
     }
+    
+        private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,9 +141,13 @@ public class CustomerHome extends javax.swing.JFrame {
         btnEditDetails = new javax.swing.JButton();
         btnUnregisterFromShop = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnBrowseProducts.setBackground(new java.awt.Color(24, 24, 24));
+        btnBrowseProducts.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBrowseProducts.setForeground(new java.awt.Color(255, 255, 255));
         btnBrowseProducts.setText("BROWSE PRODUCTS");
         btnBrowseProducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,6 +155,9 @@ public class CustomerHome extends javax.swing.JFrame {
             }
         });
 
+        btnViewOrders.setBackground(new java.awt.Color(24, 24, 24));
+        btnViewOrders.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnViewOrders.setForeground(new java.awt.Color(255, 255, 255));
         btnViewOrders.setText("VIEW MY ORDERS");
         btnViewOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +165,9 @@ public class CustomerHome extends javax.swing.JFrame {
             }
         });
 
+        btnEditDetails.setBackground(new java.awt.Color(24, 24, 24));
+        btnEditDetails.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditDetails.setForeground(new java.awt.Color(255, 255, 255));
         btnEditDetails.setText("EDIT DETAILS");
         btnEditDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +175,9 @@ public class CustomerHome extends javax.swing.JFrame {
             }
         });
 
+        btnUnregisterFromShop.setBackground(new java.awt.Color(24, 24, 24));
+        btnUnregisterFromShop.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnUnregisterFromShop.setForeground(new java.awt.Color(255, 255, 255));
         btnUnregisterFromShop.setText("UNREGISTER FROM SHOP");
         btnUnregisterFromShop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +185,9 @@ public class CustomerHome extends javax.swing.JFrame {
             }
         });
 
+        btnLogOut.setBackground(new java.awt.Color(24, 24, 24));
+        btnLogOut.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogOut.setForeground(new java.awt.Color(255, 255, 255));
         btnLogOut.setText("LOG OUT");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,38 +200,36 @@ public class CustomerHome extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
-                        .addComponent(btnUnregisterFromShop))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(btnLogOut))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(125, 125, 125)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnViewOrders)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnBrowseProducts)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(25, 25, 25)
-                                    .addComponent(btnEditDetails))))))
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnViewOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUnregisterFromShop, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(btnBrowseProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(btnBrowseProducts)
-                .addGap(18, 18, 18)
-                .addComponent(btnViewOrders)
-                .addGap(18, 18, 18)
-                .addComponent(btnEditDetails)
-                .addGap(18, 18, 18)
-                .addComponent(btnUnregisterFromShop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(btnLogOut)
-                .addGap(47, 47, 47))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(btnBrowseProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnUnregisterFromShop, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();
@@ -204,9 +312,20 @@ public class CustomerHome extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CustomerHome().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CustomerHome().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -215,5 +334,6 @@ public class CustomerHome extends javax.swing.JFrame {
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnUnregisterFromShop;
     private javax.swing.JButton btnViewOrders;
+    private javax.swing.JLabel jLabelLogo;
     // End of variables declaration//GEN-END:variables
 }

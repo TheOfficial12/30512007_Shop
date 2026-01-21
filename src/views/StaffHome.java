@@ -4,6 +4,18 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import models.Staff;
 
 /**
@@ -11,6 +23,13 @@ import models.Staff;
  * @author 30512007
  */
 public class StaffHome extends javax.swing.JFrame {
+    
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color DEFAULT_COLOUR = new Color (50, 50, 50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffHome.class.getName());
 
@@ -22,13 +41,94 @@ public class StaffHome extends javax.swing.JFrame {
     public StaffHome() {
         initComponents();
         this.loggedInStaff=null;
+        applyCustomDesign();
     }
     
     public StaffHome(Staff staffIn)
     {
         initComponents();
         this.loggedInStaff=staffIn;
+        applyCustomDesign();
+        
     }
+    
+    private void applyCustomDesign()
+    {
+        
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        //Buttons to Opagque and round shape)
+        JButton[] btns = {btnModifyProducts,btnViewAllOrders, btnLogOut};
+        
+        for (JButton btn : btns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+            
+            btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            
+            //Opacity to show colours
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            
+            //DEFAUlt style
+            btn.setBackground(BTN_DEFAULT);
+            btn.setForeground(TEXT_WHITE);
+            btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(btn);
+        }  
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+    }
+    
+     private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
     
 
     /**
@@ -43,9 +143,13 @@ public class StaffHome extends javax.swing.JFrame {
         btnModifyProducts = new javax.swing.JButton();
         btnViewAllOrders = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnModifyProducts.setBackground(new java.awt.Color(24, 24, 24));
+        btnModifyProducts.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnModifyProducts.setForeground(new java.awt.Color(255, 255, 255));
         btnModifyProducts.setText("MODIFY PRODUCTS");
         btnModifyProducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,6 +157,9 @@ public class StaffHome extends javax.swing.JFrame {
             }
         });
 
+        btnViewAllOrders.setBackground(new java.awt.Color(24, 24, 24));
+        btnViewAllOrders.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnViewAllOrders.setForeground(new java.awt.Color(255, 255, 255));
         btnViewAllOrders.setText("VIEW ALL ORDERS");
         btnViewAllOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,6 +167,9 @@ public class StaffHome extends javax.swing.JFrame {
             }
         });
 
+        btnLogOut.setBackground(new java.awt.Color(24, 24, 24));
+        btnLogOut.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogOut.setForeground(new java.awt.Color(255, 255, 255));
         btnLogOut.setText("LOG OUT");
         btnLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,25 +184,28 @@ public class StaffHome extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(131, 131, 131)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnViewAllOrders)
-                            .addComponent(btnModifyProducts)))
+                        .addContainerGap()
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(btnLogOut)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                        .addGap(138, 138, 138)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnViewAllOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModifyProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(btnModifyProducts)
-                .addGap(44, 44, 44)
-                .addComponent(btnViewAllOrders)
-                .addGap(47, 47, 47)
-                .addComponent(btnLogOut)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnModifyProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnViewAllOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -142,14 +255,26 @@ public class StaffHome extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StaffHome().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new StaffHome().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnModifyProducts;
     private javax.swing.JButton btnViewAllOrders;
+    private javax.swing.JLabel jLabelLogo;
     // End of variables declaration//GEN-END:variables
 }
