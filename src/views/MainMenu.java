@@ -61,9 +61,7 @@ public class MainMenu extends javax.swing.JFrame {
             btn.setBorder(UIManager.getBorder("Button.border"));
             
             //Make button rounds
-            /*btn.putClientProperty("JButton.buttonType","roundRect");
-            btn.putClientProperty("JComponent.roundRect", true);
-            btn.putClientProperty("Component.arc",0);*/
+            
             btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
             
             //Opacity to show colours

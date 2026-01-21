@@ -4,7 +4,22 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 import models.Customer;
 import models.DBManager;
 
@@ -14,6 +29,14 @@ import models.DBManager;
  */
 public class CustomerLogin extends javax.swing.JFrame {
     
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color DEFAULT_COLOUR = new Color (50, 50, 50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
+
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerLogin.class.getName());
 
     /**
@@ -21,8 +44,108 @@ public class CustomerLogin extends javax.swing.JFrame {
      */
     public CustomerLogin() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        btnLogin.setBorder(UIManager.getBorder("Button.border"));
+        btnLogin.setOpaque(false);
+        btnLogin.setContentAreaFilled(true);
+        btnLogin.setFocusPainted(false);
+        btnLogin.putClientProperty("FlatLaf.style", 
+                "arc: 25;" +
+                "borderWidth: 0;" );
+        btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        //Buttons to Opagque and round shape)
+        JButton[] btns = { btnRegister, jButton1};
+        
+        for (JButton btn : btns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+           
+            btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            
+            //Opacity to show colours
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            
+            //DEFAUlt style
+            btn.setBackground(BTN_DEFAULT);
+            btn.setForeground(TEXT_WHITE);
+            btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(btn);
+        }  
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        JTextComponent[] inputs = {txtUsername, txtPassword};
+        for (JTextComponent input : inputs)
+        {
+            input.setOpaque(false);
+            input.setBorder(UIManager.getBorder("TextField.border"));
+            
+            input.putClientProperty("FlatLaf.style",
+                    "arc: 15;" + //Rounded Corners
+                    "borderColor: #00D25A;"+ //Bright Gren
+                    "borderWidth: 2;" + //Visible green outline
+                    "focusWidth: 1;"+
+                    "caretColor: #ffffff;" + //White blinking cursor
+                    " selectionBackground : #00D25A;" +
+                    "selectionForeground: #000000;");
+            input.setMargin(new Insets(5, 10, 5, 10));
+        }
     }
 
+        private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,22 +163,41 @@ public class CustomerLogin extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         btnRegister = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabelLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("CUSTOMER LOGIN");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username");
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Password");
 
+        txtUsername.setBackground(new java.awt.Color(50, 50, 50));
+        txtUsername.setForeground(new java.awt.Color(255, 255, 255));
+
+        txtPassword.setBackground(new java.awt.Color(50, 50, 50));
+        txtPassword.setForeground(new java.awt.Color(255, 255, 255));
+
+        btnLogin.setBackground(new java.awt.Color(0, 210, 90));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
         btnLogin.setText("LOGIN");
+        btnLogin.setMaximumSize(new java.awt.Dimension(72, 27));
+        btnLogin.setMinimumSize(new java.awt.Dimension(72, 27));
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
             }
         });
 
+        btnRegister.setBackground(new java.awt.Color(24, 24, 24));
+        btnRegister.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnRegister.setForeground(new java.awt.Color(255, 255, 255));
         btnRegister.setText("REGISTER");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,7 +205,10 @@ public class CustomerLogin extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("RETURN TO MAIN MENU");
+        jButton1.setBackground(new java.awt.Color(24, 24, 24));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setLabel("RETURN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -75,49 +220,52 @@ public class CustomerLogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(126, 126, 126)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addGap(117, 117, 117)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsername)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRegister)
-                            .addComponent(btnLogin)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(jButton1)))
-                .addContainerGap(118, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel3)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtPassword)
+                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jLabel1)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel1)))
+                .addGap(3, 3, 3)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(btnLogin)
-                .addGap(18, 18, 18)
-                .addComponent(btnRegister)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,9 +331,20 @@ public class CustomerLogin extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CustomerLogin().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CustomerLogin().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -195,6 +354,7 @@ public class CustomerLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
