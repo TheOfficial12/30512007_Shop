@@ -4,8 +4,19 @@
  */
 package views;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import models.Customer;
 import models.DBManager;
@@ -19,6 +30,12 @@ import models.Product;
  */
 public class Basket extends javax.swing.JFrame {
     
+    private final Color BG_DARK = new Color(24, 24, 24); //Background colour
+    private final Color BTN_DEFAULT = new Color(50,50,50);
+    private final Color ACCENT_GREEN = new Color(0, 210, 90); //Bright green
+    private final Color TEXT_WHITE = Color.WHITE;
+    private final Color TEXT_BLACK = Color.BLACK;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Basket.class.getName());
     
     private Order currentBasket;
@@ -29,6 +46,7 @@ public class Basket extends javax.swing.JFrame {
      */
     public Basket() {
         initComponents();
+        applyCustomDesign();
     }
     
         
@@ -38,7 +56,7 @@ public class Basket extends javax.swing.JFrame {
         
         this.currentBasket = basketIn;
         this.loggedInCustomer = customerIn;
-        
+        applyCustomDesign();
         //Label of the total price
         lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
                 
@@ -72,6 +90,121 @@ public class Basket extends javax.swing.JFrame {
         }
     }
 
+    private void applyCustomDesign()
+    {
+        this.setLocationRelativeTo(null);
+        
+        //Background colour
+        this.getContentPane().setBackground(BG_DARK);
+        
+        //Making image label too 100px
+        jLabelLogo.setPreferredSize(new Dimension(100,100));
+        jLabelLogo.setSize(100,100);
+        
+        btnBuy.setBorder(UIManager.getBorder("Button.border"));
+        btnBuy.setOpaque(false);
+        btnBuy.setContentAreaFilled(true);
+        btnBuy.setFocusPainted(false);
+        btnBuy.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBuy.putClientProperty("FlatLaf.style", 
+                "arc: 25;" +
+                "borderWidth: 0;" );
+        
+        
+        //Buttons to Opagque and round shape)
+        JButton[] btns = {btnAddMoreProducts, btnRemoveOrderLine};
+        
+        for (JButton btn : btns)
+        {
+            btn.setBorder(UIManager.getBorder("Button.border"));
+            
+            //Make button rounds
+            btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
+            //Opacity to show colours
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(true);
+            btn.setFocusPainted(false);
+            
+            //DEFAUlt style
+            btn.setBackground(BTN_DEFAULT);
+            btn.setForeground(TEXT_WHITE);
+            
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            
+            //GREen border
+            btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
+            
+            addHoverEffect(btn);
+        }  
+        try
+        {
+            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
+            ImageIcon originalIcon = new ImageIcon(localPath);
+            //Resize image
+            Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
+            //Apply to label
+            jLabelLogo.setPreferredSize(new Dimension(61,69));
+            jLabelLogo.setSize(61,69);
+            jLabelLogo.setMinimumSize(new Dimension(61,69));
+            
+            jLabelLogo.setIcon(new ImageIcon(scaledImg));
+            jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
+            this.setIconImage(originalIcon.getImage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("Logo image not found" + e.getMessage());
+        }
+        
+        //Styling the Table
+        jScrollPane1.putClientProperty("FlatLaf.style",
+                "arc: 15;"
+                        + "borderWidth:2;"
+                        + "borderColor:#00D25a;"
+                        + "background: #323232;"
+                        + "focusWidth: 0;");
+
+        //When a row is selected
+        lstOrders.setSelectionBackground(ACCENT_GREEN);
+        lstOrders.setSelectionForeground(TEXT_BLACK);
+        lstOrders.setRowHeight(30);
+        lstOrders.putClientProperty("FlatLaf.style", "selectionArc: 10; selectionInsets:2, 2, 2, 2; focusWidth: 0;");
+        
+        //Style Header
+        lstOrders.getTableHeader().setBackground(new Color(30, 30, 30));
+        lstOrders.getTableHeader().setForeground(TEXT_WHITE);
+        lstOrders.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lstOrders.getTableHeader().putClientProperty("FlatLaf.style", "bottomSeparatorColor: #00D25A; bottomSeparatorHeight: 2;");
+        
+        if (lstOrders.getColumnModel().getColumnCount()>0)
+        {
+            lstOrders.getColumnModel().getColumn(0).setMinWidth(0);
+            lstOrders.getColumnModel().getColumn(0).setMaxWidth(100);
+            lstOrders.getColumnModel().getColumn(0).setPreferredWidth(80);
+            lstOrders.getColumnModel().getColumn(2).setMinWidth(0);
+            lstOrders.getColumnModel().getColumn(2).setMaxWidth(100);
+            lstOrders.getColumnModel().getColumn(2).setPreferredWidth(90);
+        }
+    }
+    
+     private void addHoverEffect(JButton btn)
+    {
+        btn.addMouseListener(new MouseAdapter()
+                {
+                    public void mouseEntered(MouseEvent evt)
+                {
+                    //Hovering on to vibrant green background adnd black text
+                    btn.setBackground(ACCENT_GREEN);
+                    btn.setForeground(TEXT_BLACK);
+                }
+                    public void mouseExited (MouseEvent evt)
+                {
+                    btn.setBackground(BTN_DEFAULT);
+                    btn.setForeground(TEXT_WHITE);
+                }
+                });
+    } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,9 +220,14 @@ public class Basket extends javax.swing.JFrame {
         btnBuy = new javax.swing.JButton();
         btnRemoveOrderLine = new javax.swing.JButton();
         lblTotalPrice = new javax.swing.JLabel();
+        jLabelLogo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        lstOrders.setBackground(new java.awt.Color(24, 24, 24));
+        lstOrders.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lstOrders.setForeground(new java.awt.Color(255, 255, 255));
         lstOrders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -98,66 +236,96 @@ public class Basket extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ProductId", "Product", "Price", "Quantity"
+                "ProductId", "Product", "Quantity", "Price"
             }
         ));
         jScrollPane1.setViewportView(lstOrders);
+        if (lstOrders.getColumnModel().getColumnCount() > 0) {
+            lstOrders.getColumnModel().getColumn(0).setPreferredWidth(60);
+        }
 
-        btnAddMoreProducts.setText("Add More Products");
+        btnAddMoreProducts.setBackground(new java.awt.Color(24, 24, 24));
+        btnAddMoreProducts.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAddMoreProducts.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddMoreProducts.setText("ADD MORE PRODUCTS");
         btnAddMoreProducts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddMoreProductsActionPerformed(evt);
             }
         });
 
-        btnBuy.setText("Buy");
+        btnBuy.setBackground(new java.awt.Color(0, 210, 90));
+        btnBuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnBuy.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuy.setText("BUY");
         btnBuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuyActionPerformed(evt);
             }
         });
 
-        btnRemoveOrderLine.setText("Remove Selected Product");
+        btnRemoveOrderLine.setBackground(new java.awt.Color(24, 24, 24));
+        btnRemoveOrderLine.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRemoveOrderLine.setForeground(new java.awt.Color(255, 255, 255));
+        btnRemoveOrderLine.setText("REMOVE PRODUCT");
         btnRemoveOrderLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveOrderLineActionPerformed(evt);
             }
         });
 
+        lblTotalPrice.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTotalPrice.setForeground(new java.awt.Color(255, 255, 255));
         lblTotalPrice.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("YOUR BASKET");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(btnAddMoreProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRemoveOrderLine))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(btnAddMoreProducts, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRemoveOrderLine, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18))
+                        .addContainerGap()
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
-                .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1)))
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddMoreProducts)
-                    .addComponent(btnRemoveOrderLine))
+                .addComponent(lblTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnBuy)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveOrderLine, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(btnBuy, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(btnAddMoreProducts, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
         );
 
         pack();
@@ -236,6 +404,8 @@ public class Basket extends javax.swing.JFrame {
     private javax.swing.JButton btnAddMoreProducts;
     private javax.swing.JButton btnBuy;
     private javax.swing.JButton btnRemoveOrderLine;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelLogo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTotalPrice;
     private javax.swing.JTable lstOrders;
