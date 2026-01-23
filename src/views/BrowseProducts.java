@@ -376,23 +376,26 @@ public class BrowseProducts extends javax.swing.JFrame {
     //Filter list by category
     private void lstCategoriesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstCategoriesValueChanged
         // TODO add your handling code here:
-        //Get Selected Category
+        // Get the string value of the selected category (e.g., "Heatpump")
         String selectedCategory = lstCategories.getSelectedValue();
-        
+        // Safety check: if nothing is selected (e.g., list cleared), do nothing
         if (selectedCategory == null)
         {
             return; 
         }
-        
+        // Create a new model to hold the filtered products
         DefaultListModel<Product> productsModel = new DefaultListModel<>();
         
+        // Iterate through the master list of all products loaded from the DB
         for (Product p : allProducts)
             //  Check if the product's class name matches the selected category
-            // (p.getClass().getName() == "models.Heatpump")
+            // Example: "models.Heatpump" matches "models." + "Heatpump"
             if(p.getClass().getName().equals("models." + selectedCategory))
             {
+                // If it matches, add it to the display model
                 productsModel.addElement(p);
             }   
+        // Update the JList to show only the filtered products
         lstProduct.setModel(productsModel);
     }//GEN-LAST:event_lstCategoriesValueChanged
 
@@ -408,12 +411,15 @@ public class BrowseProducts extends javax.swing.JFrame {
     
     private void btnAddToBasketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToBasketActionPerformed
         // TODO add your handling code here:
+        // Retrieve the selected product object and the quantity entered
         Product selectedProduct = lstProduct.getSelectedValue();    
         String quantityText = txtQuantity.getText();
         
         int quantity ;
+        //Input Validation
         try
         {
+            // Attempt to convert the text input into an integer
             quantity = Integer.parseInt(quantityText);
         }
         catch(NumberFormatException e)
@@ -421,19 +427,21 @@ public class BrowseProducts extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please enter a valid Number","Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+        // Ensure a product is actually selected from the list
         if(selectedProduct==null)
         {
             JOptionPane.showMessageDialog(this, "Please select a product.", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        //Stock check
+        //Logic Validation (Stock & Limits)
+        // Ensure quantity is positive
         if (quantity <= 0)
         {
             JOptionPane.showMessageDialog(this, "Quanity must be more than 1", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        // Check if there is enough stock available for this order
         if (quantity > selectedProduct.getStockLevel()) 
         {
             // Show an error message with the available stock
@@ -441,18 +449,20 @@ public class BrowseProducts extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, message, "Stock Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+        //Add to Basket
+        // Create a new OrderLine using the product ID and requested quantity
         int orderLineId = selectedProduct.getProductId();
         OrderLine  newOrderLine = new OrderLine(orderLineId, selectedProduct, quantity);
         
+        // Add this line to the current session's basket
         currentBasket.addOrderLine(newOrderLine);
-        
         lblConfirmation.setText("Added to Basket");
         
+        // Create a timer to clear the confirmation message after 2 seconds
         Timer timer = new Timer(2000, new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                //This code runs after 2 seconds
+                // This code runs after the delay
                 lblConfirmation.setText(""); // Clear the label
             }
         });

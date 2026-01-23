@@ -54,13 +54,13 @@ public class Basket extends javax.swing.JFrame {
     public Basket (Order basketIn, Customer customerIn)
     {
         initComponents();
-        
+        // Store session data for processing later
         this.currentBasket = basketIn;
         this.loggedInCustomer = customerIn;
         applyCustomDesign();
-        //Label of the total price
+        // update the total price label immediately
         lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
-                
+        // Fill the table with the current items in the basket
         populateTable();
     }
     
@@ -68,16 +68,20 @@ public class Basket extends javax.swing.JFrame {
     
     private void populateTable()
     {
+        // Get the model from the JTable to manipulate rows
+
         DefaultTableModel powerModel = (DefaultTableModel) lstOrders.getModel();
         
+        // Clear existing rows to prevent duplicates when refreshing
         powerModel.setRowCount(0);
         
+        // Iterate through the HashMap of OrderLines
         for (Map.Entry<Integer, OrderLine> ol: currentBasket.getOrderLines().entrySet())
         {
             OrderLine actualOrderLine = ol.getValue();
             Product product = actualOrderLine.getProductBought();
             
-            // Create an array of data for the new row
+            // Create an array of data for the new row with Id, name, quantity, price
             Object[] rowData = new Object[] {
                 product.getProductId(),
                 product.getProductName(),
@@ -93,50 +97,54 @@ public class Basket extends javax.swing.JFrame {
 
     private void applyCustomDesign()
     {
+        // Center the window on the screen
         this.setLocationRelativeTo(null);
         
-        //Background colour
+        // Set the main background colour to deep dark grey
         this.getContentPane().setBackground(BG_DARK);
         
         //Making image label too 100px
         jLabelLogo.setPreferredSize(new Dimension(100,100));
         jLabelLogo.setSize(100,100);
         
+        // --- Style the 'Buy Now' Button (Primary) ---
         btnBuy.setBorder(UIManager.getBorder("Button.border"));
         btnBuy.setOpaque(false);
         btnBuy.setContentAreaFilled(true);
         btnBuy.setFocusPainted(false);
         btnBuy.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // Apply FlatLaf rounded corners without a border
         btnBuy.putClientProperty("FlatLaf.style", 
                 "arc: 25;" +
                 "borderWidth: 0;" );
         
         
-        //Buttons to Opagque and round shape)
+        // --- Style Secondary Buttons (Add More / Remove) ---
         JButton[] btns = {btnAddMoreProducts, btnRemoveOrderLine};
         
         for (JButton btn : btns)
         {
             btn.setBorder(UIManager.getBorder("Button.border"));
-            //Make button rounds
+            // Apply rounded corners and a green border
             btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
-            //Opacity to show colours
+           // Ensure transparency for the background color to show
             btn.setOpaque(false);
             btn.setContentAreaFilled(true);
             btn.setFocusPainted(false);
-            //DEFAUlt style
+            // Default colors and font
             btn.setBackground(BTN_DEFAULT);
             btn.setForeground(TEXT_WHITE);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            //GREen border
+            // Set the component outline color
             btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
             addHoverEffect(btn);
         }  
         try
+            // --- Load Logo Image ---
         {
             String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
             ImageIcon originalIcon = new ImageIcon(localPath);
-            //Resize image
+            // Scale the image smoothly to fit the label
             Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
             //Apply to label
             jLabelLogo.setPreferredSize(new Dimension(61,69));
@@ -152,7 +160,7 @@ public class Basket extends javax.swing.JFrame {
             System.out.println("Logo image not found" + e.getMessage());
         }
         
-        //Styling the Table
+        // --- Style the Order List Table ---
         jScrollPane1.putClientProperty("FlatLaf.style",
                 "arc: 15;"
                         + "borderWidth:2;"
@@ -160,41 +168,49 @@ public class Basket extends javax.swing.JFrame {
                         + "background: #323232;"
                         + "focusWidth: 0;");
 
-        //When a row is selected
+        // Customize selection colors (Green highlight, black text)
         lstOrders.setSelectionBackground(ACCENT_GREEN);
         lstOrders.setSelectionForeground(TEXT_BLACK);
         lstOrders.setRowHeight(30);
         lstOrders.putClientProperty("FlatLaf.style", "selectionArc: 10; selectionInsets:2, 2, 2, 2; focusWidth: 0;");
         
-        //Style Header
+        // Style the Table Header
         lstOrders.getTableHeader().setBackground(new Color(30, 30, 30));
         lstOrders.getTableHeader().setForeground(TEXT_WHITE);
         lstOrders.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         lstOrders.getTableHeader().putClientProperty("FlatLaf.style", "bottomSeparatorColor: #00D25A; bottomSeparatorHeight: 2;");
-        
+       
+        // Adjust column widths for better readability
+
         if (lstOrders.getColumnModel().getColumnCount()>0)
         {
+            // ID Column (Narrow)
+
             lstOrders.getColumnModel().getColumn(0).setMinWidth(0);
             lstOrders.getColumnModel().getColumn(0).setMaxWidth(100);
             lstOrders.getColumnModel().getColumn(0).setPreferredWidth(80);
+            // Quantity Column (Narrow)
             lstOrders.getColumnModel().getColumn(2).setMinWidth(0);
             lstOrders.getColumnModel().getColumn(2).setMaxWidth(100);
             lstOrders.getColumnModel().getColumn(2).setPreferredWidth(90);
         }
     }
-    
+    /**
+     * Adds visual feedback when hovering over buttons.
+     */
      private void addHoverEffect(JButton btn)
     {
         btn.addMouseListener(new MouseAdapter()
                 {
                     public void mouseEntered(MouseEvent evt)
                 {
-                    //Hovering on to vibrant green background adnd black text
+                    // Hover: Bright green background, black text
                     btn.setBackground(ACCENT_GREEN);
                     btn.setForeground(TEXT_BLACK);
                 }
                     public void mouseExited (MouseEvent evt)
                 {
+                    // Exit: Revert to dark theme
                     btn.setBackground(BTN_DEFAULT);
                     btn.setForeground(TEXT_WHITE);
                 }
@@ -351,22 +367,22 @@ public class Basket extends javax.swing.JFrame {
         
         if (selectedRow == -1)
         {
+            // Error handling if nothing is selected
             JOptionPane.showMessageDialog(this,"Error: Please Choose a Product to remove");
         }
         else
         {
             //Get product id from coloumn 0 of the selected row
-            //parse to string, then to int
             String idString = lstOrders.getValueAt(selectedRow, 0).toString();
             int productId = Integer.parseInt(idString);
             
-            //cqll method
+            // Remove the item from the Order object
             currentBasket.removeOrderLine(productId);
             
-            //Update View and show confirmation
+            // Confirm success and refresh the table to show changes
             JOptionPane.showMessageDialog(this, "Product successfully removed");
             populateTable();
-            
+            // Recalculate and update the total price label
             lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
             
         }

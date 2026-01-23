@@ -234,7 +234,7 @@ public class CustomerHome extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //BRoseProductsPage
     private void btnBrowseProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseProductsActionPerformed
         // TODO add your handling code here:
         BrowseProducts browseProducts = new BrowseProducts(new Order(), this.loggedInCustomer);
@@ -242,7 +242,7 @@ public class CustomerHome extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_btnBrowseProductsActionPerformed
-
+    //Logg out to MAin Menu page
     private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
         // TODO add your handling code here:
         MainMenu mainMenu = new MainMenu();
@@ -250,30 +250,13 @@ public class CustomerHome extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_btnLogOutActionPerformed
-
+    //Unregister
     private void btnUnregisterFromShopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnregisterFromShopActionPerformed
         // TODO add your handling code here:
-        String username = loggedInCustomer.getUsername();
+        UnregisteringCustomer unregisteringCustomer = new UnregisteringCustomer( this.loggedInCustomer);
+        unregisteringCustomer.setVisible(true);
+        this.dispose();
         
-        int choice = JOptionPane.showConfirmDialog(
-            this, 
-            "Are you sure you want to unregister?\nAll your details and order history will be permanently deleted.", 
-            "Confirm Unregister", 
-            JOptionPane.YES_NO_OPTION, // Gives "Yes" and "No" buttons
-            JOptionPane.WARNING_MESSAGE // Shows a warning icon
-        );
-        
-        if (choice == JOptionPane.YES_OPTION)
-        {
-            DBManager db = new DBManager();
-            db.unregisterCustomer(username);
-            
-            JOptionPane.showMessageDialog(this, "You have been successfully unregistered.");
-            
-            MainMenu mainMenu = new MainMenu();
-            mainMenu.setVisible(true);
-            this.dispose();
-        }
     }//GEN-LAST:event_btnUnregisterFromShopActionPerformed
 
     private void btnEditDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditDetailsActionPerformed

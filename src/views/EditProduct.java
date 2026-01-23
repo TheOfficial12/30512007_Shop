@@ -64,37 +64,45 @@ public class EditProduct extends javax.swing.JFrame {
         initComponents();       
         applyCustomDesign();
         
+        // Store the session data (Staff and the Product being edited)
         this.loggedInStaff = staffIn;  
         this.productToEdit = productIn;
-        
+        // Make the Product ID read-only so it cannot be changed
         txtProductId.setEditable(false);
-        
+        // Populate the form with the product's current common details
         txtProductId.setText(String.valueOf(productToEdit.getProductId()));
         txtProductName.setText(productToEdit.getProductName());
         txtPrice.setText(String.valueOf(productToEdit.getPrice()));
         txtStockLevel.setText(String.valueOf(productToEdit.getStockLevel()));
         
+        //Handle specific fields based on Product Type 
         if (productToEdit instanceof SolarPanel)
         {
+            // Cast to SolarPanel to access and display Wattage
             SolarPanel S = (SolarPanel) productToEdit;  
             txtWattage.setText(String.valueOf(S.getWattageOutput()));
             txtWattage.setBackground(new Color(50, 50, 50));
+            // Disable fields not relevant to Solar Panels
             txtEfficiency.setEnabled(false);
             txtPartFor.setEnabled(false);
         }
         else if (productToEdit instanceof Heatpump)
         {
+            // Cast to Heatpump to access and display Efficiency
             Heatpump h = (Heatpump) productToEdit;
             txtEfficiency.setText(String.valueOf(h.getEfficiencyRating()));
             txtEfficiency.setBackground(new Color(50, 50, 50));
+            // Disable fields not relevant to Heat Pumps
             txtPartFor.setEnabled(false);
             txtWattage.setEnabled(false);
         }
         else if (productToEdit instanceof Replacement_Parts)
         {
+            // Cast to Replacement_Parts to access 'Part For' info
             Replacement_Parts r = (Replacement_Parts) productToEdit;
             txtPartFor.setText(r.getPartFor());
             txtPartFor.setBackground(new Color(50, 50, 50));
+            // Disable fields not relevant to Replacement Parts
             txtEfficiency.setEnabled(false);
             txtWattage.setEnabled(false);
         }  
@@ -436,35 +444,49 @@ public class EditProduct extends javax.swing.JFrame {
         // TODO add your handling code here:
         try
         {
+            //Gather and Update Common Data
+            // Retrieve generic details applicable to all products
             String name = txtProductName.getText();
             double price = Double.parseDouble(txtPrice.getText());
             int stock = Integer.parseInt(txtStockLevel.getText());
             
+            // Update the local product object in memory
             productToEdit.setProductName(name);
             productToEdit.setPrice(price);
             productToEdit.setStockLevel(stock);
             
+            //Handle Specific Data
+            // Check if the product is a Solar Panel to update wattage
             if (productToEdit instanceof SolarPanel)
             {
                 int watts = Integer.parseInt(txtWattage.getText());
+                // Cast the object to access SolarPanel-specific methods
                 ((SolarPanel) productToEdit).setWattageOutput(watts);
             }
+            
+            // Check if it is a Heat Pump to update efficiency
             else if (productToEdit instanceof Heatpump)
             {
                 double eff = Double.parseDouble(txtEfficiency.getText());
                 ((Heatpump)productToEdit).setEfficiencyRating(eff);
             }
+            
+            // Check if it is a Replacement Part to update description
             else if (productToEdit instanceof Replacement_Parts)
             {
                 String partFor = txtPartFor.getText();
                 ((Replacement_Parts)productToEdit).setPartFor(partFor);
             }
             
+            //Commit Changes to Database
             models.DBManager db = new models.DBManager();
+            
+            // Attempt to update the record in the database
             if (db.updateProduct(productToEdit))
             {
                 JOptionPane.showMessageDialog(this, "Product Update Successfully!");
                 
+                // On success, return to the main Product Menu
                 ProductMenu productMenu = new ProductMenu(this.loggedInStaff);
                 productMenu.setVisible(true);
                 this.dispose();
@@ -477,6 +499,7 @@ public class EditProduct extends javax.swing.JFrame {
         }
         catch(NumberFormatException e)
         {
+            // Handle invalid numeric inputs (e.g. text in price field)
             JOptionPane.showMessageDialog(this, "Error:Please enter valid numbers for Price, Stock, etc.");
         }
     }//GEN-LAST:event_btnEditActionPerformed

@@ -407,6 +407,7 @@ public class RegisterCustomer extends javax.swing.JFrame {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         // TODO add your handling code here:
+        //Input retrievel
         String username  = txtUsername.getText();
         String password = txtPassword.getText();
         String firstName = txtFirstName.getText();
@@ -416,35 +417,44 @@ public class RegisterCustomer extends javax.swing.JFrame {
         String town = txtTown.getText();
         String postcode = txtPostcode.getText();
         
+        //Input Validation
+        // Ensure critical login credentials are provided
         if (username.isEmpty() || password.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Username and Password are required.");
             return;
         }
+        // Ensure personal details are provided
         if (firstName.isEmpty()||lastName.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "First Name and LastName are required.");
             return;
         }
+        // Ensure address details are sufficient for delivery
         if(addressLine1.isEmpty() || town.isEmpty() || postcode.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Address Line1, Town and Postcode are required.");
             return;
         }
-        
+        //Create Object & Save
+        // Create a new Customer object with the validated data
         Customer newCustomer = new Customer(username, password, firstName, lastName, addressLine1, addressLine2, town, postcode);
         
         models.DBManager db = new models.DBManager();
+        
+        // Attempt to register the customer in the database
         if (db.registerCustomer(newCustomer))
         {
             JOptionPane.showMessageDialog(this,"Registrstion SuccessFull!");
             
+            // Redirect the user to the Login screen upon success
             CustomerLogin customerLogin = new CustomerLogin();
             customerLogin.setVisible(true);
             this.dispose();
         }
         else
         {
+            // Handle duplicate usernames or database errors
             JOptionPane.showMessageDialog(this, "Error: Registration Failed (Username might be taken).");
         }
         

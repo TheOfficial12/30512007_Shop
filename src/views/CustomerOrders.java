@@ -46,6 +46,7 @@ public class CustomerOrders extends javax.swing.JFrame {
         
         this.loggedInCustomer = customerIn;
         
+        // Display the username but prevent editing (Read-Only)
         txtUsername.setText(loggedInCustomer.getUsername());
         txtUsername.setEditable(false);
         applyCustomDesign();
@@ -60,19 +61,24 @@ public class CustomerOrders extends javax.swing.JFrame {
     
     public void populateTable()
     {
+        // Get the model from the visual JTable to manipulate data
+
         DefaultTableModel model = (DefaultTableModel) lstOrders.getModel();
+        // Clear any existing rows to prevent duplication when refreshing
         model.setRowCount(0);
         
         DBManager db = new DBManager();
+        // Load orders SPECIFIC to this username
         HashMap <Integer,Order> orders = db.loadOrders(loggedInCustomer.getUsername());
-        
+        // Iterate through the orders and add them to the table
         for (Order o : orders.values())
         {
+            // Create a row object with: ID, Date, Total Price, and Status
             model.addRow(new Object[] 
             {
                 o.getOrderId(),
                 o.getOrderDate(),
-                "£"+o.getOrderTotal(),
+                "£"+o.getOrderTotal(),// Add currency symbol for display
                 o.getStatus()
             });
         }

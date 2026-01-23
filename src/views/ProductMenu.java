@@ -421,15 +421,16 @@ public class ProductMenu extends javax.swing.JFrame {
                     .addComponent(txtSearchPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnBinarySearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSelectionSort, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBubbleSort, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLinearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSelectionSort, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBubbleSort, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLinearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -483,11 +484,14 @@ public class ProductMenu extends javax.swing.JFrame {
 
     private void btnEditProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditProductActionPerformed
         // TODO add your handling code here:
+        //Validation
+        // Check if an item is actually selected in the list (-1 means no selection)
         if (lstProduct.getSelectedIndex()!= -1)
         {
+            // Retrieve the selected object and cast it to the Product class
             Object selectedProductObject = (Object)lstProduct.getSelectedValue();
             Product selectedProduct = (Product) selectedProductObject;
-            
+            //Navigation
             EditProduct editProduct = new EditProduct(this.loggedInStaff,selectedProduct);
             editProduct.setVisible(true);
             this.dispose();
@@ -496,6 +500,7 @@ public class ProductMenu extends javax.swing.JFrame {
         
         else
         {
+            // Show error if the user clicks Edit without highlighting a row
             JOptionPane.showMessageDialog(this, "Choose a Product First", "Product Error", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -503,23 +508,30 @@ public class ProductMenu extends javax.swing.JFrame {
 
     private void btnDeleteProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteProductActionPerformed
         // TODO add your handling code here:
+        // Ensure a product is selected before attempting deletion
         if (lstProduct.getSelectedIndex() != -1)
         {
             
             Product selectedProduct = lstProduct.getSelectedValue();
             
+            //Database Deletion
+            // Initialize DB connection and delete the record using the unique Product ID
             DBManager db = new DBManager();
             db.deleteProduct(selectedProduct.getProductId());
             
+            //UpdateUI
+            // Update the visual list immediately by removing the item from the model
             DefaultListModel productModel = (DefaultListModel)lstProduct.getModel();
             productModel.remove(lstProduct.getSelectedIndex());
             
+            // Refresh the local master list to ensure data synchronization
             allProducts = db.loadProducts();
             
             JOptionPane.showMessageDialog(this, "Deleted Product successfully!");
         }
         else
         {
+            // Handle case where no selection was made
             JOptionPane.showMessageDialog(this, "Error: Select a Product First");
         } 
     }//GEN-LAST:event_btnDeleteProductActionPerformed

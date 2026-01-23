@@ -60,6 +60,7 @@ public class AddProduct extends javax.swing.JFrame {
         applyCustomDesign();
         this.loggedInStaff = staffIn;  
         
+        //Grouping radio buttons
         ButtonGroup group =  new ButtonGroup();
         group.add(rdoBtnSolarPanel);
         group.add(rdoBtnHeatPump);
@@ -428,16 +429,17 @@ public class AddProduct extends javax.swing.JFrame {
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
         // TODO add your handling code here:
         
-        
+        //CHecking if textboxs are empty
         String productName = txtProductName.getText();
         if(productName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Error: Product Name cannot be empty");
             return;
         }
-        
+        // Initialize variables for parsing
         double price = 0;
         int stock = 0;
         
+        // Try to parse Price (Must be a Double)
         try
         {
             price = Double.parseDouble(txtPrice.getText());
@@ -447,7 +449,7 @@ public class AddProduct extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error: Price should be an Integer");
             return;
         }
-        
+        // Try to parse Stock Level (Must be an Integer)
         try
         {
             stock = Integer.parseInt(txtStockLevel.getText());
@@ -457,13 +459,15 @@ public class AddProduct extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error: Stock Level should be an Integer");
             return;
         }
-        
+        // Placeholder for the polymorphic product object we will create
         Product productToAdd = null;
         
+// Check which Radio Button is selected to determine the subclass
         if (rdoBtnSolarPanel.isSelected())
         {
             try
             {
+                // Solar Panels require an Integer for wattage
                 int wattage = Integer.parseInt(txtWattage.getText());
                 productToAdd = new SolarPanel(productName, price, stock, wattage);
             }
@@ -477,18 +481,22 @@ public class AddProduct extends javax.swing.JFrame {
         {
             try
             {
+                // Heat Pumps require a Double for efficiency rating
                 double efficiency = Double.parseDouble(txtEfficiency.getText());
                 productToAdd = new Heatpump(productName, price, stock, efficiency);
             }
             catch (NumberFormatException e)
             {
-                JOptionPane.showMessageDialog(this, "Error: Stock Level should be an Integer");
+                
+                JOptionPane.showMessageDialog(this, "Error: Efficiency Rating should be an Integer");
                 return;
             }
         }
         else if (rdoBtnReplacementPart.isSelected())
         {
+            // Replacement Parts require a String description
             String partFor = txtPartFor.getText();
+            // Validate that the specific description isn't empty
             if(partFor.isEmpty()) 
             {
                 JOptionPane.showMessageDialog(this, "Error: 'Part For' cannot be empty");
@@ -497,9 +505,11 @@ public class AddProduct extends javax.swing.JFrame {
             productToAdd = new Replacement_Parts(productName, price, stock, partFor);
         }
         
+        // If the object was successfully created, try to save it
         if (productToAdd != null)
         {
             DBManager db = new DBManager();
+            // Call the database manager to insert the new record
             if (db.addProduct(productToAdd))
             {
                 JOptionPane.showMessageDialog(this,"Product Succeffully Created");
@@ -514,13 +524,15 @@ public class AddProduct extends javax.swing.JFrame {
     private void btnConfirmCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmCategoryActionPerformed
         // TODO add your handling code here:
         
+        // Logic to toggle textboxes based on selection
+        // This prevents users from entering data into irrelevant fields
         if (rdoBtnSolarPanel.isSelected())
         {
-            // Enable Wattage
+            // Enable Wattage input for Solar Panels
             txtWattage.setEnabled(true);
             txtWattage.setBackground(new Color(50, 50, 50)); // Reset color if needed
 
-            // Disable & Clear the others
+            // Disable & Clear Efficiency and PartFor fields
             txtEfficiency.setEnabled(false);
             txtEfficiency.setText("");
 
@@ -529,11 +541,11 @@ public class AddProduct extends javax.swing.JFrame {
         }
         else if (rdoBtnHeatPump.isSelected())
         {
-            // Enable Efficiency
+            // Enable Efficiency input for Heat Pumps
             txtEfficiency.setEnabled(true);
             txtEfficiency.setBackground(new Color(50, 50, 50));
 
-            // Disable & Clear the others
+            // Disable & Clear Wattage and PartFor fields            
             txtWattage.setEnabled(false);
             txtWattage.setText("");
 
@@ -542,10 +554,11 @@ public class AddProduct extends javax.swing.JFrame {
         }
         else if (rdoBtnReplacementPart.isSelected())
         {
+            // Enable PartFor input for Replacement Parts
             txtPartFor.setEnabled(true);
             txtPartFor.setBackground(new Color(50, 50, 50));
 
-            // Disable & Clear the others
+            // Disable & Clear Wattage and Efficiency fields            
             txtWattage.setEnabled(false);
             txtWattage.setText("");
 
@@ -554,6 +567,7 @@ public class AddProduct extends javax.swing.JFrame {
         }
         else
         {
+            // Show error if user clicks Confirm without selecting a category
             JOptionPane.showMessageDialog(this, "Error: Choose one of the Category");
         }
     }//GEN-LAST:event_btnConfirmCategoryActionPerformed
@@ -578,6 +592,7 @@ public class AddProduct extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        // Attempt to apply the FlatDarkLaf theme for consistent design
         try{
             UIManager.setLookAndFeel(new FlatDarkLaf());
             

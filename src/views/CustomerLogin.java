@@ -289,20 +289,22 @@ public class CustomerLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
+        //getting text from username and password
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         
         DBManager db = new DBManager();
-        
+        //Checking if the data matches
         Customer loggedInCustomer = db.customerLogin(username, password);
-        
+        //If not null, it proces to the customerhome
         if (loggedInCustomer != null)
         {
         CustomerHome customerHome = new CustomerHome(loggedInCustomer);
         customerHome.setVisible(true);
         this.dispose();
         }
+        //If null, error message
         else
         {
             JOptionPane.showMessageDialog(this,"Login Failed, Please Check your Username and Password.","Login Error", JOptionPane.ERROR_MESSAGE);

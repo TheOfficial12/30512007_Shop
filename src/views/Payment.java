@@ -70,17 +70,20 @@ public class Payment extends javax.swing.JFrame {
             return realCardNumber;
         }
         String lastFour = realCardNumber.substring(realCardNumber.length()-4);
-        
+        //Making only the last 4 digits show, and everything else masked
         return "**** **** ****" + lastFour;
     }
     
     public void show_cards()
     {
+        // Create a list model to manipulate the JList component
         DefaultListModel<String> cardsModel = new DefaultListModel();
+        // Loop through the card numbers stored in the Customer object
         for (String card: loggedInCustomer.getCardNumbers())
         {
             cardsModel.addElement(String.valueOf(card));
         }
+        // Update the visual list to show the cards
         lstCardNo.setModel(cardsModel);
     }
     
@@ -382,10 +385,11 @@ public class Payment extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDefaultAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnConfirm)
-                    .addComponent(btnBack)
-                    .addComponent(btnDeleteCard))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBack)
+                        .addComponent(btnDeleteCard)))
                 .addGap(24, 24, 24))
         );
 
@@ -394,37 +398,45 @@ public class Payment extends javax.swing.JFrame {
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         // TODO add your handling code here:
+        
+        //Validation
+        // Ensure the user has actually highlighted a card in the list
         if (lstCardNo.getSelectedIndex() == -1)
         {
             JOptionPane.showMessageDialog(this, "Please select a Card to pay with");
             return;
         }
+        // Retrieve selected card and finalize basket calculations
         String selectedCard = lstCardNo.getSelectedValue();
         currentBasket.calculateOrderTotal();
         currentBasket.setPaymentCard(selectedCard);
-
+        //Save Order to Database
         DBManager db = new DBManager();
-        
+        // Save the main Order record and get back the new unique OrderID
         int newOrderId = db.saveOrder(currentBasket, loggedInCustomer.getUsername()); 
         
         if (newOrderId>0) {
-        
+            //Save Order Lines & Update Stock
+            // Loop through every product currently in the basket
             for (OrderLine ol : currentBasket.getOrderLines().values()) 
             {
+                //Write the individual item to the OrderLines table
                 db.writeOrderLine(ol, newOrderId);
-                
+                //Retrieve product details to adjust stock
                 Product product = ol.getProductBought();
                 int quantity = ol.getQuantity();
                 
-                //update the stock
+                //Reduce the stock level in the Products table
                 db.updateStockLevel(product, quantity);
             }
-            
+            //Success & Navigation
             JOptionPane.showMessageDialog(this, "Order placed successfully!");
+            // Open the confirmation screen
             Confirmation confirmFrame = new Confirmation(this.loggedInCustomer);
             confirmFrame.setVisible(true);
             this.dispose();
         } else {
+             // Handle database errors 
             JOptionPane.showMessageDialog(this, "Error placing order. Please try again.", "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmActionPerformed
@@ -432,13 +444,17 @@ public class Payment extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         String rawCardNum = txtCardNo.getText();
+        
+        // Basic length check
         if (rawCardNum.length() < 8)
         {
             JOptionPane.showMessageDialog(this, "Error: Enter a Valid Card Number");
             return;
         }
-        String secureCard = maskCardNumber(rawCardNum);
         
+        // Convert "12345678" to "****5678" for security
+        String secureCard = maskCardNumber(rawCardNum);
+        // Save to customer object and refresh the UI
         loggedInCustomer.addCard(secureCard);
         
         txtCardNo.setText("");
@@ -448,11 +464,14 @@ public class Payment extends javax.swing.JFrame {
     private void btnDefaultAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDefaultAddActionPerformed
         // TODO add your handling code here:
         String rawCardNum = txtDefault.getText();
+        
+        // Basic length check
         if (rawCardNum.length() < 8)
         {
             JOptionPane.showMessageDialog(this, "Error: Enter a Valid Card Number");
             return;
         }
+        // Mask and add as the 'First' (Default) card
         String secureCard = maskCardNumber(rawCardNum);
         
         loggedInCustomer.addFirstCard(secureCard);
@@ -464,15 +483,17 @@ public class Payment extends javax.swing.JFrame {
 
     private void btnDeleteCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCardActionPerformed
         // TODO add your handling code here:
-        
+        // Ensure a card is selected to avoid IndexOutOfBounds errors
         if (lstCardNo.getSelectedIndex() == - 1)
         {
             JOptionPane.showMessageDialog(this, "Error: Select a Card Number First");
         }
         else
         {
+            // Remove from the customer object based on list index
             loggedInCustomer.removeCard(lstCardNo.getSelectedIndex());
             JOptionPane.showMessageDialog(this, "Success: Card Number Successfully Removed");
+            // Refresh list to show it is gone
             show_cards();
         }
     }//GEN-LAST:event_btnDeleteCardActionPerformed

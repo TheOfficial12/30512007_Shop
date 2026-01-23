@@ -56,6 +56,7 @@ public class EditCustomer extends javax.swing.JFrame {
         
         applyCustomDesign();
         
+        //Getting all the Text from the textboxes and giving them a variable
         txtUsername.setText(customerIn.getUsername());
         txtPassword.setText(customerIn.getPassword());
         txtFirst.setText(customerIn.getFirstName());
@@ -353,13 +354,13 @@ public class EditCustomer extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel6))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,7 +401,8 @@ public class EditCustomer extends javax.swing.JFrame {
         try
         {
             
-            
+            //Input Retrieval ---
+            // Fetch the current text from all the form fields
             String password = txtPassword.getText();
             String first = txtFirst.getText();
             String last = txtLast.getText();
@@ -409,23 +411,28 @@ public class EditCustomer extends javax.swing.JFrame {
             String town = txtTown.getText();
             String postcode = txtPostcode.getText();
             
+            //Input Validation
+            // Validation: Ensure Password is not empty
             if (password == null || password.trim().isEmpty())
             {
                 JOptionPane.showMessageDialog(this, "Password cant be null","Input Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+            // Validation: Ensure First and Last names are not empty
             if (first == null || last==null || first.trim().isEmpty() || last.trim().isEmpty())
             {
                 JOptionPane.showMessageDialog(this, "First Name or Last Name cant be null","Input Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+            // Validation: Ensure essential address fields are present
             if (address1 == null || town == null || postcode == null || address1.trim().isEmpty() || town.trim().isEmpty() || postcode.trim().isEmpty())
             {
                 JOptionPane.showMessageDialog(this, "Address Line 1, town, postcode cant be null","Input Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             
-            
+            //Update local Object
+            //Update properties of the logged in customer
             loggedInCustomer.setPassword(password);
             loggedInCustomer.setFirstName(first);
             loggedInCustomer.setLastName(last);
@@ -434,12 +441,13 @@ public class EditCustomer extends javax.swing.JFrame {
             loggedInCustomer.setTown(town);
             loggedInCustomer.setPostcode(postcode);
 
-            
+            //Database update
             models.DBManager db = new models.DBManager();
+            //call the database manager to update the record
             if (db.updateCustomer(loggedInCustomer))
             {
                 JOptionPane.showMessageDialog(this, "Details Updated Successfully!");
-                
+                // On success, return the user to the Customer Home screen
                 CustomerHome customerHome = new CustomerHome(this.loggedInCustomer);
                 customerHome.setVisible(true);
                 this.dispose();
@@ -450,8 +458,9 @@ public class EditCustomer extends javax.swing.JFrame {
             }
             
         }
-        catch(NumberFormatException e)
+        catch(Exception e)
         {
+            // Handle any unexpected errors during the update process
             JOptionPane.showMessageDialog(this, "Error:Error from database");
         }
     }//GEN-LAST:event_btnEditActionPerformed

@@ -55,19 +55,25 @@ public class ViewOrdersStaff extends javax.swing.JFrame {
     
     public void populateTable()
     {
+        // Get the model from the JTable to manipulate the rows
         DefaultTableModel model = (DefaultTableModel) lstAllOrders.getModel();
+        // Clear any existing data to prevent duplicates
         model.setRowCount(0);
         
         DBManager db = new DBManager();
+        // Load orders specifically for the username currently in the text box
+        // (This allows staff to search/filter by customer)
         HashMap <Integer,Order> orders = db.loadOrders(txtUsername.getText());
         
+        //Popul;ate Table
+        // Loop through the results and add each order as a new row
         for (Order o : orders.values())
         {
             model.addRow(new Object[] 
             {
                 o.getOrderId(),
                 o.getOrderDate(),
-                "£"+o.getOrderTotal(),
+                "£"+o.getOrderTotal(), // Format price with currency symbol
                 o.getStatus()
             });
         }
@@ -296,10 +302,11 @@ public class ViewOrdersStaff extends javax.swing.JFrame {
                                 .addGap(16, 16, 16)
                                 .addComponent(jLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtUsername)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))

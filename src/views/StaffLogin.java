@@ -279,13 +279,16 @@ public class StaffLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
+        //Retrieving data
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         
+        //Accessing database
         DBManager db = new DBManager();
         
         Staff loggedInStaff = db.staffLogin(username, password);
         
+        //Validation
         if (loggedInStaff != null)
         {
             StaffHome staffHome = new StaffHome();

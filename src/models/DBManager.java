@@ -51,6 +51,16 @@ public class DBManager {
                 stmt.setString(1,username);
                 stmt.executeUpdate();
             }
+            catch (SQLException e)
+                    {
+                    //If anything fails, itll roll back (undo changes)
+                    conn.rollback();
+                    throw e; // Re-throw to handle it in the catch block below
+                    
+                    }
+            //Commit
+            conn.commit();
+            
         }
         catch (SQLException ex) 
         {
