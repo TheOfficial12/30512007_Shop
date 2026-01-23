@@ -4,6 +4,7 @@
  */
 package views;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -42,6 +43,11 @@ public class StaffLogin extends javax.swing.JFrame {
     public StaffLogin() {
         initComponents();
         
+        applyCustomDesign();
+    }
+    
+    private void applyCustomDesign()
+    {
         this.setLocationRelativeTo(null);
         
         //Background colour
@@ -174,6 +180,7 @@ public class StaffLogin extends javax.swing.JFrame {
         jLabel3.setText("Password");
 
         txtUsername.setBackground(new java.awt.Color(50, 50, 50));
+        txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(255, 255, 255));
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +189,7 @@ public class StaffLogin extends javax.swing.JFrame {
         });
 
         txtPassword.setBackground(new java.awt.Color(50, 50, 50));
+        txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(255, 255, 255));
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,9 +329,20 @@ public class StaffLogin extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+            
+        }
+        catch(Exception e)
+        {
+            System.err.println("Failed to initialize Flatleaf");
+        }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StaffLogin().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new StaffLogin().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
