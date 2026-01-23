@@ -141,8 +141,9 @@ public class Payment extends javax.swing.JFrame {
         
         try
         {
-            String localPath = "D:\\HND\\James Hood\\Main Project\\30512007_Shop\\src\\views\\logo.png";
-            ImageIcon originalIcon = new ImageIcon(localPath);
+            java.net.URL imgURL = getClass().getResource("/views/logo.png");
+            if (imgURL != null) {
+            ImageIcon originalIcon = new ImageIcon(imgURL);
             //Resize image
             Image scaledImg = originalIcon.getImage().getScaledInstance(61, 69, Image.SCALE_SMOOTH);
             //Apply to label
@@ -153,6 +154,7 @@ public class Payment extends javax.swing.JFrame {
             jLabelLogo.setIcon(new ImageIcon(scaledImg));
             jLabelLogo.setHorizontalAlignment(SwingConstants.CENTER);
             this.setIconImage(originalIcon.getImage());
+            }
         }
         catch (Exception e)
         {
