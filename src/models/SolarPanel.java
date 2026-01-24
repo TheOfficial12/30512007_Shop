@@ -5,11 +5,12 @@
 package models;
 
 /**
- *
+ *Solar Panel subclass.
  * @author 30512007
  */
 public class SolarPanel extends Product{
     
+    // Specific wattage output
     private int wattageOutput;
     
     //Constructors
@@ -17,13 +18,14 @@ public class SolarPanel extends Product{
     {
         
     }
-    
+    //Constructor without ID.
     public SolarPanel(String productNameIn, double priceIn, int stockLevelIn, int wattageOutputIn)
     {
         super (productNameIn, priceIn, stockLevelIn);
         wattageOutput = wattageOutputIn;
     }
     
+    //Constructor with everything
     public SolarPanel(int productIdIn, String productNameIn, double priceIn, int stockLevelIn, int wattageOutputIn)
     {
         super (productIdIn, productNameIn, priceIn, stockLevelIn);
@@ -44,7 +46,7 @@ public class SolarPanel extends Product{
     @Override
     public String toString() {
    
-        return getProductName() + " - £" + String.format("%.2f", getPrice()) + getWattageOutput();
+        return getProductName() + " - £" + String.format("%.2f", getPrice()) + " (" + wattageOutput + "W)";
     }
     
 }

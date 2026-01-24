@@ -144,23 +144,6 @@ public class BrowseProductsGuest extends javax.swing.JFrame {
         }
     }
     
-    private void addHoverEffect(JButton btn)
-    {
-        btn.addMouseListener(new MouseAdapter()
-                {
-                    public void mouseEntered(MouseEvent evt)
-                {
-                    //Hovering on to vibrant green background adnd black text
-                    btn.setBackground(ACCENT_GREEN);
-                    btn.setForeground(TEXT_BLACK);
-                }
-                    public void mouseExited (MouseEvent evt)
-                {
-                    btn.setBackground(BTN_DEFAULT);
-                    btn.setForeground(TEXT_WHITE);
-                }
-                });
-    } 
     
 
     /**

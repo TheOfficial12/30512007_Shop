@@ -52,7 +52,7 @@ public class AddProduct extends javax.swing.JFrame {
         initComponents();
         applyCustomDesign();
     }
-    
+    //Constructor receiving the logged-in staff member.
     public AddProduct(Staff staffIn) {
         DBManager db = new DBManager();
         
@@ -60,7 +60,7 @@ public class AddProduct extends javax.swing.JFrame {
         applyCustomDesign();
         this.loggedInStaff = staffIn;  
         
-        //Grouping radio buttons
+        // Group radio buttons so only one can be selected
         ButtonGroup group =  new ButtonGroup();
         group.add(rdoBtnSolarPanel);
         group.add(rdoBtnHeatPump);
@@ -79,6 +79,7 @@ public class AddProduct extends javax.swing.JFrame {
         jLabelLogo.setPreferredSize(new Dimension(100,100));
         jLabelLogo.setSize(100,100);
         
+        // Add Button Styling
         btnAddProduct.setBorder(UIManager.getBorder("Button.border"));
         btnAddProduct.setOpaque(false);
         btnAddProduct.setContentAreaFilled(true);
@@ -89,7 +90,7 @@ public class AddProduct extends javax.swing.JFrame {
                 "borderWidth: 0;" );
         
         
-        //Buttons to Opagque and round shape)
+        // Navigation Button Styling
         JButton[] btns = {btnBack, btnConfirmCategory};
         
         for (JButton btn : btns)
@@ -97,7 +98,6 @@ public class AddProduct extends javax.swing.JFrame {
             btn.setBorder(UIManager.getBorder("Button.border"));
             
             //Make button rounds
-            
             btn.putClientProperty("FlatLaf.style", "arc: 25; borderWidth: 2; borderColor: #00D25A; background: #323232; foreground: #ffffff; focusWidth: 0;");
             
             //Opacity to show colours
@@ -105,20 +105,19 @@ public class AddProduct extends javax.swing.JFrame {
             btn.setContentAreaFilled(true);
             btn.setFocusPainted(false);
             
-            //DEFAUlt style
+            //Default style
             btn.setBackground(BTN_DEFAULT);
             btn.setForeground(TEXT_WHITE);
             btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             
-            //GREen border
+            //Green border
             btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
-            
             addHoverEffect(btn);
         }  
         try
         {
-            //Getting the image of the logo
+            // Load Logo relative to classpath
             java.net.URL imgURL = getClass().getResource("/views/logo.png");
             if (imgURL != null) {
             ImageIcon originalIcon = new ImageIcon(imgURL);
@@ -155,14 +154,7 @@ public class AddProduct extends javax.swing.JFrame {
                     "background: #323232; " + 
                     "foreground: #ffffff;");
         }
-        
-        txtProductName.putClientProperty("JComponent.roundRect", true);
-        txtPrice.putClientProperty("JComponent.roundRect", true);
-        txtStockLevel.putClientProperty("JComponent.roundRect", true);
-        txtWattage.putClientProperty("JComponent.roundRect", true);
-        txtEfficiency.putClientProperty("JComponent.roundRect", true);
-        txtPartFor.putClientProperty("JComponent.roundRect", true);
-        
+        // Default Disabled State
         txtWattage.setEnabled(false);
         txtEfficiency.setEnabled(false);
         txtPartFor.setEnabled(false);
@@ -435,7 +427,7 @@ public class AddProduct extends javax.swing.JFrame {
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
         // TODO add your handling code here:
         
-        //CHecking if textboxs are empty
+        // Validation: Product Name
         String productName = txtProductName.getText();
         if(productName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Error: Product Name cannot be empty");
@@ -445,7 +437,7 @@ public class AddProduct extends javax.swing.JFrame {
         double price = 0;
         int stock = 0;
         
-        // Try to parse Price (Must be a Double)
+        // Validation: Price & Stock
         try
         {
             price = Double.parseDouble(txtPrice.getText());
@@ -468,7 +460,7 @@ public class AddProduct extends javax.swing.JFrame {
         // Placeholder for the polymorphic product object we will create
         Product productToAdd = null;
         
-// Check which Radio Button is selected to determine the subclass
+        // Check which Radio Button is selected to determine the subclass
         if (rdoBtnSolarPanel.isSelected())
         {
             try

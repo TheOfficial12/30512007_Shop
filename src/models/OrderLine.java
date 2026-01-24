@@ -4,10 +4,11 @@
  */
 package models;
 
-import java.util.Date;
+
     
 /**
- *
+ *Represents a single line item in an order.
+ * Links a product to a specific quantity and calculated price.
  * @author 30512007
  */
 public class OrderLine {
@@ -18,46 +19,37 @@ public class OrderLine {
     
     //Getters and Setters
     
-    //Getter
     public int getOrderLineId()
     {
         return orderLineId;
     }
-    //Setter
     public void setOrderLineId (int orderLineIdIn)
     {
         orderLineId = orderLineIdIn;
     }
     
-    
-    //Getter
     public Product getProductBought()
     {
         return productBought;
     }
-    //Setter
     public void setProductBought (Product productBoughtIn)
     {
         productBought = productBoughtIn;
     }
     
-    //Getter
     public int getQuantity()
     {
         return quantity;
     }
-    //Setter
     public void setQuantity (int quantityIn)
     {
         quantity = quantityIn;
     }
     
-    //Getter
     public double getLineTotal()
     {
         return lineTotal;
     }
-    //Setter
     public void setLineTotal (double lineTotalIn)
     {
         lineTotal = lineTotalIn;

@@ -10,7 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
+ *Represents a customer order.
+ * Contains order details and a collection of OrderLine items.
  * @author 30512007
  */
 public class Order {
@@ -19,69 +20,59 @@ public class Order {
     private Date orderDate;
     private double orderTotal;
     private String status;
-    //Hashmap,Data_Type_Of_Key
-    //Integer - orderLineId
-    private HashMap<Integer,OrderLine> orderLines;
     private String paymentCard;
     
+    // Maps OrderLine ID to OrderLine objects for efficient lookup
+    private HashMap<Integer,OrderLine> orderLines;
+
     //Getters and Setters
-    
-    //Getter
+
     public int getOrderId()
     {
         return orderId;
     }
-    //Setter
+    
     public void setOrderId(int orderIdIn)
     {
         orderId = orderIdIn;
     }
     
-    //Getter
     public Date getOrderDate()
     {
         return orderDate;
     }
-    //Setter
     public void setOrderDate (Date orderDateIn)
     {
         orderDate = orderDateIn;
     }
     
-    //Getter
     public double getOrderTotal()
     {
         return orderTotal;
     }
-    //Setter
     public void setOrderTotal (double orderTotalIn)
     {
         orderTotal = orderTotalIn;
     }
     
-    //Getter
     public String getStatus()
     {
         return status;
     }
-    //Setter
     public void setStatus (String statusIn)
     {
         status = statusIn;
     }
     
-    //Getter
     public HashMap<Integer,OrderLine> getOrderLines()
     {
         return orderLines;
     }
-    //Setter
     public void setOrderLines (HashMap<Integer,OrderLine> orderLinesIn)
     {
         orderLines = orderLinesIn;
     }
     
-    //Get/Set for payment card
     public String getPaymentCard()
     {
         return paymentCard;
@@ -91,7 +82,7 @@ public class Order {
         this.paymentCard = paymentCard;
     }
     
-    //Constructor - 0 parameter
+    //Default Constructor
     public Order()
     {
         orderId = 0;
@@ -111,45 +102,43 @@ public class Order {
         orderLines = new HashMap();
     }
     
+    //Adds an item to the order and updates the total price.
         public void addOrderLine(OrderLine orderLineIn)
     {
-        // Add the new line to the HashMap using its ID as the key
+        // Add to map
         orderLines.put(orderLineIn.getOrderLineId(), orderLineIn);
         
-        // Automatically update the order's total price
+        // Update Total
         orderTotal += orderLineIn.getLineTotal();
     }
         
+        //Recalculate total costs
         public void calculateOrderTotal()
         {
            double total = 0;
 
             for (OrderLine ol : orderLines.values())
             {
-                // Add the line's total to the running total
                 total = total + ol.getLineTotal();
             }
     
-            // Set the class's orderTotal attribute to the final calculated value
             this.orderTotal = total;
         }
-    
+    //Removes a product from the order and updates the total price.
+     //Uses an Iterator to safely remove items while looping.
     public void removeOrderLine(int productId)
     {
-        // Create an Iterator to safely loop through the basket
+        
         Iterator<Map.Entry<Integer, OrderLine>> iter = orderLines.entrySet().iterator();
         while (iter.hasNext())
         {
             Map.Entry<Integer, OrderLine> olEntry = iter.next();
             OrderLine currentLine = olEntry.getValue();
             
-            // Check if this line contains the product we selected
+            // If product matches, remove line and deduct cost
             if(currentLine.getProductBought().getProductId() == productId)
             {
-                //We found the product inside this line! Remove the whole line.
                 iter.remove();
-            
-                // Deduct the cost of that line from the total
                 this.orderTotal = this.orderTotal - currentLine.getLineTotal();
             }
             

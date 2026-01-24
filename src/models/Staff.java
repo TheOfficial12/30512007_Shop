@@ -5,7 +5,8 @@
 package models;
 
 /**
- *
+ *Staff User subclass.
+ * Represents employees with specific roles and salary info.
  * @author 30512007
  */
 public class Staff extends User{
@@ -13,12 +14,13 @@ public class Staff extends User{
     private String position;
     private double salary;
     
-    //Constructors
+    //Constructors Default
     public Staff()
     {
         
     }
     
+    //Constructor with full details.
     public Staff (String usernameIn, String passwordIn, String firstNameIn, String lastNameIn, String positionIn, double salaryIn)
     {
         super (usernameIn, passwordIn, firstNameIn, lastNameIn);

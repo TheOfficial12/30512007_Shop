@@ -4,8 +4,9 @@
  */
 package models;
 
-/**
- *
+/*
+ *  Abstract User class.
+ * Parent class for Customer and Staff, holding login credentials.
  * @author 30512007
  */
 public class User {
@@ -15,12 +16,12 @@ public class User {
     private String firstName;
     private String lastName;
     
-    //Constructors
+    //Constructors Default
     public User()
     {
         
     }
-    
+    //Constructor with full details.
     public User (String usernameIn, String passwordIn, String firstNameIn, String lastNameIn)
     {
         username = usernameIn;
@@ -70,8 +71,5 @@ public class User {
     {
         lastName = lastNameIn;
     }
-    
-    
-    
-    
+
 }

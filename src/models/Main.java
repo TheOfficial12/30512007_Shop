@@ -2,7 +2,10 @@ package models; // Your package declaration
 
 import java.util.ArrayList; // Import ArrayList for the lists
 
-
+/**
+ * Main class for console testing.
+ * @author 30512007
+ */
 public class Main {
 
     /**
@@ -10,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        // Create an instance of DBManager
+        // Create DB instance
         DBManager dbManager = new DBManager();
 
         // Test loading customers
@@ -23,14 +26,14 @@ public class Main {
         } else {
             // Print details of each loaded customer
             for (Customer cust : loadedCustomers) {
-                // Use the correct getter method name from your User class
+                
                 System.out.println("Loaded Customer: " + cust.getFirstName() + " " + cust.getLastName() + " (" + cust.getUsername() + ")");
             }
         }
         System.out.println("--------------------------\n");
 
 
-        // --- Test loading staff ---
+        // Test loading staff 
         System.out.println("--- Loading Staff ---");
         ArrayList<Staff> loadedStaff = dbManager.loadStaff();
 
@@ -40,7 +43,7 @@ public class Main {
         } else {
             // Print details of each loaded staff member
             for (Staff staff : loadedStaff) {
-                 // Use the correct getter method name from your User class
+                 
                 System.out.println("Loaded Staff: " + staff.getFirstName() + " " + staff.getLastName() + " (" + staff.getUsername() + "), Position: " + staff.getPosition());
             }
         }

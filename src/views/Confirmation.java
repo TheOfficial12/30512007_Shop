@@ -15,7 +15,8 @@ import javax.swing.UIManager;
 import models.Customer;
 
 /**
- *
+ *Confirmation Screen.
+ * Displays a success message (e.g., after placing an order) and redirects home.
  * @author thomm
  */
 public class Confirmation extends javax.swing.JFrame {
@@ -30,9 +31,9 @@ public class Confirmation extends javax.swing.JFrame {
 
     private Customer loggedInCustomer;
     
-    /**
-     * Creates new form Confirmation
-     */
+    
+     // Creates new form Confirmation
+     
     public Confirmation(Customer customerIn) {
         initComponents();
         this.loggedInCustomer = customerIn;
@@ -51,6 +52,7 @@ public class Confirmation extends javax.swing.JFrame {
         jLabelLogo.setPreferredSize(new Dimension(100,100));
         jLabelLogo.setSize(100,100);
         
+        // Style Return Button
         btnReturnToHome.setBorder(UIManager.getBorder("Button.border"));
         btnReturnToHome.setOpaque(false);
         btnReturnToHome.setContentAreaFilled(true);
@@ -84,6 +86,7 @@ public class Confirmation extends javax.swing.JFrame {
         
         try
         {
+            // Load Success Tick Icon
            java.net.URL imgCHECK = getClass().getResource("/views/tick_circle.png");
             if (imgCHECK != null) {
             ImageIcon tickIcon = new ImageIcon(imgCHECK);
@@ -91,14 +94,11 @@ public class Confirmation extends javax.swing.JFrame {
             
             lblTickIcon.setIcon(tickIcon);
             }
-            
         }
         catch (Exception e)
         {
             System.out.println("Logo image not found" + e.getMessage());
         }
-        
-        
     }
 
     /**

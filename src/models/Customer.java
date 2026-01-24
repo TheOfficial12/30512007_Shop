@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- *
+ *Customer class.
+ * Extends User to include address and payment info.
  * @author 30512007
  */
 public class Customer extends User { // Inherits User features
@@ -22,7 +23,7 @@ public class Customer extends User { // Inherits User features
     // Store orders by ID
     private HashMap <Integer, Order> orders;
     
-    // List for card nums
+   // List of masked cards
     private LinkedList<String> cardNumbers;
     
     

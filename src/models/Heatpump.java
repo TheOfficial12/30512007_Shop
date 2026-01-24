@@ -1,14 +1,15 @@
 package models;
 
 /**
+ * Heat pump subclass.
  * @author 30512007
  */
 public class Heatpump extends Product { // Inherit the product class
     
-    //SPecific to the heatpump
+    //Specific to the heatpump
     private double efficiencyRating;
     
-    //EMpty constructor
+    //Empty constructor
     public Heatpump()
     {
         
@@ -28,7 +29,7 @@ public class Heatpump extends Product { // Inherit the product class
         efficiencyRating = efficiencyRatingIn;
     }
     
-    //GEt/Set rating 
+    //GEt/Set efficiency
     public double getEfficiencyRating()
     {
         return efficiencyRating;
@@ -38,7 +39,7 @@ public class Heatpump extends Product { // Inherit the product class
         efficiencyRating = efficiencyRatingIn;
     }
     
-    //Show name and price
+    // Display string for lists
     @Override
     public String toString() {
    

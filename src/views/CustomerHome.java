@@ -22,7 +22,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 /**
- *
+ *Customer Home Screen.
+ * Central hub for customer actions: browsing, orders, editing details, etc.
  * @author 30512007
  */
 public class CustomerHome extends javax.swing.JFrame {
@@ -60,7 +61,7 @@ public class CustomerHome extends javax.swing.JFrame {
         jLabelLogo.setPreferredSize(new Dimension(100,100));
         jLabelLogo.setSize(100,100);
         
-        //Buttons to Opagque and round shape)
+        //Buttons to Opaque and round shape
         JButton[] btns = {btnBrowseProducts, btnViewOrders, btnEditDetails, btnUnregisterFromShop, btnLogOut};
         
         for (JButton btn : btns)
@@ -76,13 +77,13 @@ public class CustomerHome extends javax.swing.JFrame {
             btn.setContentAreaFilled(true);
             btn.setFocusPainted(false);
             
-            //DEFAUlt style
+            //Default style
             btn.setBackground(BTN_DEFAULT);
             btn.setForeground(TEXT_WHITE);
             btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             
-            //GREen border
+            //Green border
             btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
             
             addHoverEffect(btn);

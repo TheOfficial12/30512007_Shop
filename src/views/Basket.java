@@ -69,7 +69,6 @@ public class Basket extends javax.swing.JFrame {
     private void populateTable()
     {
         // Get the model from the JTable to manipulate rows
-
         DefaultTableModel powerModel = (DefaultTableModel) lstOrders.getModel();
         
         // Clear existing rows to prevent duplicates when refreshing
@@ -107,7 +106,7 @@ public class Basket extends javax.swing.JFrame {
         jLabelLogo.setPreferredSize(new Dimension(100,100));
         jLabelLogo.setSize(100,100);
         
-        // --- Style the 'Buy Now' Button (Primary) ---
+        //Style the Buy Now Button 
         btnBuy.setBorder(UIManager.getBorder("Button.border"));
         btnBuy.setOpaque(false);
         btnBuy.setContentAreaFilled(true);
@@ -119,7 +118,7 @@ public class Basket extends javax.swing.JFrame {
                 "borderWidth: 0;" );
         
         
-        // --- Style Secondary Buttons (Add More / Remove) ---
+        // Style Secondary Buttons (Add More / Remove)
         JButton[] btns = {btnAddMoreProducts, btnRemoveOrderLine};
         
         for (JButton btn : btns)
@@ -140,7 +139,7 @@ public class Basket extends javax.swing.JFrame {
             addHoverEffect(btn);
         }  
         try
-            // --- Load Logo Image ---
+            //Load Logo Image
         {
             java.net.URL imgURL = getClass().getResource("/views/logo.png");
             if (imgURL != null) {
@@ -162,7 +161,7 @@ public class Basket extends javax.swing.JFrame {
             System.out.println("Logo image not found" + e.getMessage());
         }
         
-        // --- Style the Order List Table ---
+        //Style the Order List Table 
         jScrollPane1.putClientProperty("FlatLaf.style",
                 "arc: 15;"
                         + "borderWidth:2;"

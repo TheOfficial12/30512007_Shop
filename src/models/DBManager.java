@@ -18,7 +18,10 @@ public class DBManager {
     private static final String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
     private static final String DB_URL = "jdbc:ucanaccess://Data/ShopDB.accdb";
 
-    //Delete user details and orders
+    /**
+     * Deletes a customer and all associated data (Orders, Lines).
+     * Uses transactions to ensure complete cleanup or nothing at all.
+     */
     public void unregisterCustomer(String username)
     {
         //SQL to delete data from 3 tables
@@ -26,41 +29,38 @@ public class DBManager {
         String sqlDeleteOrders = "DELETE FROM Orders WHERE Username = ?";
         String sqlDeleteCustomer = "DELETE FROM Customers WHERE Username = ?";
         
-        try (Connection conn = DriverManager.getConnection(DB_URL))
+        try (Connection conn = DriverManager.getConnection(DB_URL)) 
         {
-            
-            //Delete items first
+            conn.setAutoCommit(false);// Start Transaction
+            try
+            {
+            // 1. Delete OrderLines
             try (PreparedStatement stmt = conn.prepareStatement(sqlDeleteOrderLine))
             {
                 stmt.setString(1,username);
                 stmt.executeUpdate();
             }
-            
-            
-            //Delete order next
+            // 2. Delete Orders
             try (PreparedStatement stmt = conn.prepareStatement(sqlDeleteOrders))
             {
                 stmt.setString(1, username);
                 stmt.executeUpdate();
             }
-            
-            
-            //Delete user next 
+            // 3. Delete Customer
             try(PreparedStatement stmt = conn.prepareStatement(sqlDeleteCustomer))
             {
                 stmt.setString(1,username);
                 stmt.executeUpdate();
+            }
+            conn.commit();// Save changes
             }
             catch (SQLException e)
                     {
                     //If anything fails, itll roll back (undo changes)
                     conn.rollback();
                     throw e; // Re-throw to handle it in the catch block below
-                    
                     }
-            //Commit
-            conn.commit();
-            
+            //Commit 
         }
         catch (SQLException ex) 
         {
@@ -199,11 +199,12 @@ public class DBManager {
                 double price = rs.getDouble("Price");
                 int stockLevel = rs.getInt("StockLevel");
                 String category = rs.getString("ProductType");
+                // Subclass specific data
                 double efficiency = rs.getDouble("EfficiencyRating");
                 int wattage = rs.getInt("WattageOutput");
                 String partFor = rs.getString("PartFor");
 
-                //Chekc category and create object
+                // Determine type and instantiate correct class
                 if (category != null && category.equalsIgnoreCase("Heat Pump")) {
                     // Create Heatpump, passing the efficiency data
                     Heatpump hp = new Heatpump(productId, productName, price, stockLevel, efficiency);
@@ -253,7 +254,9 @@ public class DBManager {
         return null; // No match found
     }
 
-    
+    /**
+     * Saves an order and returns the generated OrderID.
+     */
     public int saveOrder(Order order, String username) {
         
         // SQL query to insert data into the Orders table
@@ -261,7 +264,7 @@ public class DBManager {
 
         int orderId = 0;
      
-                
+        // RETURN_GENERATED_KEYS allows us to get the auto-ID created by Access
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -296,9 +299,7 @@ public class DBManager {
             System.err.println("Error saving order to database: " + e.getMessage());
             return 0; // Return faalse if an error occurred
         }
-
             return orderId;
-
     }
 
     //Save 9items in order 
@@ -452,7 +453,7 @@ public class DBManager {
             stmt.setDouble(2, p.getPrice());
             stmt.setInt(3, p.getStockLevel());
             
-            //Set specific fields based on the types 
+            // Set only relevant fields, null others
             if(p instanceof SolarPanel)
             {
                 stmt.setString(4, "Solar Panel");

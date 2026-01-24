@@ -24,7 +24,8 @@ import models.Customer;
 import models.DBManager;
 
 /**
- *
+ *Customer Login Screen.
+ * Authenticates users against the database.
  * @author 30512007
  */
 public class CustomerLogin extends javax.swing.JFrame {
@@ -67,7 +68,7 @@ public class CustomerLogin extends javax.swing.JFrame {
                 "borderWidth: 0;" );
         btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        //Buttons to Opagque and round shape)
+        //Buttons to Opaque and round shape
         JButton[] btns = { btnRegister, jButton1};
         
         for (JButton btn : btns)
@@ -89,7 +90,7 @@ public class CustomerLogin extends javax.swing.JFrame {
             btn.setFont(new Font ("Segoe UI", Font.BOLD, 16));
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
             
-            //GREen border
+            //Green border
             btn.putClientProperty("JComponent.outline", ACCENT_GREEN);
             
             addHoverEffect(btn);
