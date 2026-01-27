@@ -486,7 +486,7 @@ public class AddProduct extends javax.swing.JFrame {
             catch (NumberFormatException e)
             {
                 
-                JOptionPane.showMessageDialog(this, "Error: Efficiency Rating should be an Integer");
+                JOptionPane.showMessageDialog(this, "Error: Efficiency Rating should be a Number");
                 return;
             }
         }
