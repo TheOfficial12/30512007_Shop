@@ -417,12 +417,12 @@ public class BrowseProducts extends javax.swing.JFrame {
         Product selectedProduct = lstProduct.getSelectedValue();    
         String quantityText = txtQuantity.getText();
         
-        int quantity ;
+        int inputQty ;
         //Input Validation
         try
         {
             // Attempt to convert the text input into an integer
-            quantity = Integer.parseInt(quantityText);
+            inputQty = Integer.parseInt(quantityText);
         }
         catch(NumberFormatException e)
         {
@@ -438,26 +438,47 @@ public class BrowseProducts extends javax.swing.JFrame {
         
         //Logic Validation (Stock & Limits)
         // Ensure quantity is positive
-        if (quantity <= 0)
+        if (inputQty <= 0)
         {
             JOptionPane.showMessageDialog(this, "Quanity must be more than 1", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Check if there is enough stock available for this order
-        if (quantity > selectedProduct.getStockLevel()) 
-        {
-            // Show an error message with the available stock
-            String message = "Not enough stock. Only " + selectedProduct.getStockLevel() + " available.";
-            JOptionPane.showMessageDialog(this, message, "Stock Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        //Add to Basket
-        // Create a new OrderLine using the product ID and requested quantity
-        int orderLineId = selectedProduct.getProductId();
-        OrderLine  newOrderLine = new OrderLine(orderLineId, selectedProduct, quantity);
+        int currentInBasket = 0;
+        OrderLine existingLine = null; 
+
         
-        // Add this line to the current session's basket
-        currentBasket.addOrderLine(newOrderLine);
+        for (OrderLine line : currentBasket.getOrderLines().values()) { 
+            if (line.getProductBought().getProductId() == selectedProduct.getProductId()) {
+                currentInBasket = line.getQuantity();
+                existingLine = line; // Save this line so we can update it later (BP015)
+                break; 
+            }
+        }
+        
+        //Checking the stock of the product from both adding the basket quantity total and the database quantity
+        if ((inputQty + currentInBasket) > selectedProduct.getStockLevel()) {
+        String message = "Stock Limit Reached!\n" 
+                       + "In Stock: " + selectedProduct.getStockLevel() + "\n"
+                       + "In Basket: " + currentInBasket + "\n"
+                       + "You cannot add " + inputQty + " more.";
+        JOptionPane.showMessageDialog(this, message, "Stock Error", JOptionPane.ERROR_MESSAGE);
+        return; 
+        }
+        
+        if (existingLine != null) {
+        //Product is already in basket. Update the quantity.
+        int newTotalQty = existingLine.getQuantity() + inputQty;
+        existingLine.setQuantity(newTotalQty);
+        
+        
+        } else {
+            //  New Product. Create fresh line.
+            int orderLineId = selectedProduct.getProductId();
+            OrderLine newOrderLine = new OrderLine(orderLineId, selectedProduct, inputQty);
+            currentBasket.addOrderLine(newOrderLine);
+        }
+        
+
         lblConfirmation.setText("Added to Basket");
         
         // Create a timer to clear the confirmation message after 2 seconds

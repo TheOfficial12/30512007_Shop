@@ -63,6 +63,9 @@ public class ProductMenu extends javax.swing.JFrame {
         
         initComponents();
         applyCustomDesign();
+        
+        //disable binary button
+        btnBinarySearch.setEnabled(false);
 
         this.loggedInStaff = staffIn;       
         
@@ -478,6 +481,8 @@ public class ProductMenu extends javax.swing.JFrame {
                 productsModel.addElement(p);
                 
                 currentCategoryProducts.add(p);
+                //disable binary button
+                btnBinarySearch.setEnabled(false);
             }
         }
         // Update the listbox with the filtered list
@@ -586,6 +591,7 @@ public class ProductMenu extends javax.swing.JFrame {
         {
             currentModel.addElement(p);
         }
+        btnBinarySearch.setEnabled(true);
     }//GEN-LAST:event_btnBubbleSortActionPerformed
 
     private void btnSelectionSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectionSortActionPerformed
@@ -632,6 +638,7 @@ public class ProductMenu extends javax.swing.JFrame {
         {
             currentModel.addElement(p);
         }
+        btnBinarySearch.setEnabled(true);
     }//GEN-LAST:event_btnSelectionSortActionPerformed
 
     private void btnLinearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLinearSearchActionPerformed

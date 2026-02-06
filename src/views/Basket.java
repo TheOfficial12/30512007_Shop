@@ -62,6 +62,14 @@ public class Basket extends javax.swing.JFrame {
         lblTotalPrice.setText("Total: £" + String.format("%.2f", currentBasket.getOrderTotal()) );
         // Fill the table with the current items in the basket
         populateTable();
+        // Method: updateBasketTable() or updateGUI()
+
+        // FIX: Check if list is empty
+        if (lstOrders.getRowCount() == 0) {
+            btnBuy.setEnabled(false);// Grey out the button
+        } else {
+            btnBuy.setEnabled(true);// Make it clickable
+        }
     }
     
 
